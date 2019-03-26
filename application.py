@@ -80,16 +80,35 @@ def generate():
     session.clear()
     return render_template("login.html")
 
-@app.route("/add")
-def add():
+@app.route("/add_faculty")
+def add_faculty():
     session.clear()
     return render_template("login.html")
 
-@app.route("/remove")
-def remove():
+@app.route("/add_courses")
+def add_courses():
     session.clear()
     return render_template("login.html")
 
+@app.route("/remove_faculty")
+def remove_faculty():
+    session.clear()
+    return render_template("login.html")
+
+@app.route("/remove_courses")
+def remove_courses():
+    session.clear()
+    return render_template("login.html")
+
+@app.route("/list_faculty")
+def list_faculty():
+    session.clear()
+    return render_template("login.html")
+
+@app.route("/list_courses")
+def list_courses():
+    session.clear()
+    return render_template("login.html")
 @app.route("/req_list")
 def req_list():
     session.clear()
