@@ -44,22 +44,3 @@ main td
     /* left-align tables' cells */
     text-align: left;
 }
-#BMI{
-    margin: 50px;
-    text-align: justify;
-    color: darkgreen;
-    font-size: 25px;
-    font-style: italic;
-}
-#head
-{
-    color: blue;
-    font-size: 40px;
-    text-decoration: underline;
-}
-td{
-    color: blue;
-}
-th{
-    color: green;
-}

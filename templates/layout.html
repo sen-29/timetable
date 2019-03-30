@@ -15,7 +15,6 @@
 
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
         <title>Teacher Automatic Timetable: {% block title %}{% endblock %}</title>
 
     </head>
@@ -65,11 +64,12 @@
                                 {% endif %}
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
+                                <li><a href="{{ url_for('change_password') }}"> Change Password </a></li>
                                 <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                             </ul>
                         {% else %}
                             <ul class="nav navbar-nav navbar-right">
-                                
+
                             </ul>
                         {% endif %}
                     </div>

@@ -30,8 +30,7 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/")
 @login_required
 def index():
-    isadmin = db.execute("SELECT isadmin from users WHERE id = :id",{'id':session["user_id"]}).fetchone()
-    return render_template("index.html",isadmin=isadmin[0])
+    return render_template("index.html",isadmin=check_admin())
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -75,41 +74,36 @@ def logout():
     # redirect user to login form
     return redirect(url_for("login"))
 
-@app.route("/generate")
+@app.route("/generate" , methods=["GET","POST"])
 def generate():
-    session.clear()
+
     return render_template("login.html")
 
-@app.route("/add_faculty")
+@app.route("/add_faculty" , methods=["GET","POST"])
 def add_faculty():
-    session.clear()
-    return render_template("login.html")
+    return render_template("AddFaculty.html",isadmin=check_admin())
 
-@app.route("/add_courses")
+@app.route("/add_courses" , methods=["GET","POST"])
 def add_courses():
-    session.clear()
-    return render_template("login.html")
+    return render_template("AddCourse.html",isadmin=check_admin())
 
-@app.route("/remove_faculty")
+@app.route("/remove_faculty" , methods=["GET","POST"])
 def remove_faculty():
-    session.clear()
-    return render_template("login.html")
+    return render_template("RemoveFaculty.html",isadmin=check_admin())
 
-@app.route("/remove_courses")
+@app.route("/remove_courses", methods=["GET","POST"])
 def remove_courses():
-    session.clear()
-    return render_template("login.html")
+    return render_template("RemoveCourse.html",isadmin=check_admin())
 
 @app.route("/list_faculty")
 def list_faculty():
-    session.clear()
-    return render_template("login.html")
+    return render_template("ListFaculty.html",isadmin=check_admin())
 
 @app.route("/list_courses")
 def list_courses():
-    session.clear()
-    return render_template("login.html")
-@app.route("/req_list")
+    return render_template("ListCourse.html",isadmin=check_admin())
+
+@app.route("/req_list", methods=["GET","POST"])
 def req_list():
     session.clear()
     return render_template("login.html")
@@ -119,7 +113,14 @@ def view():
     session.clear()
     return render_template("login.html")
 
-@app.route("/send")
+@app.route("/send", methods=["GET","POST"])
 def send():
-    session.clear()
-    return render_template("login.html")
+    return render_template("FormforLeave.html",isadmin=check_admin())
+
+@app.route("/change_password", methods=["GET","POST"])
+def change_password():
+    return render_template("ChangePassword.html",isadmin=check_admin())
+
+def check_admin():
+    x = db.execute("SELECT isadmin from users WHERE id = :id",{'id':session["user_id"]}).fetchone()
+    return x[0]
