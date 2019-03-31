@@ -44,3 +44,78 @@ main td
     /* left-align tables' cells */
     text-align: left;
 }
+body {
+    font-family: Arial;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  form.exampleform input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+  }
+  
+  form.exampleform button {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 20px;
+    border: 1px solid grey;
+    border-left: none;
+    cursor: pointer;
+  }
+  
+  form.exampleform button:hover {
+    background: #0b7dda;
+  }
+  
+  form.exampleform::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  .facultylist {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+    margin-right: 25%;
+    margin-left: 25%;
+    }
+
+    .facultylist li {
+    border: 1px solid #ddd;
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+    position: relative;
+    }
+
+    .facultylist li:hover {
+    background-color: #eee;
+    }
+
+    .closebutton {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    padding: 16px 16px;
+    transform: translate(0%, -50%);
+    }
+    .closebutton{
+        border: none;
+        background-color: #f6f6f6;
+    }
+    .closebutton:hover {background: #bbb;}

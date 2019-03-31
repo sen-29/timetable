@@ -1,32 +1,27 @@
-<html>
-    <head>
-        <title>List Course</title>
-        <style>
-                body {
-                font-family: Arial;
-              }
-                ul {
-                list-style-type: none;
-                padding: 20px;
-                margin-left: 25%;
-                margin-right: 25%;
-                background-color: #f2f2f2;
-            } 
-            li {
-                display: block;
-                padding: 10px;
-                font-size: 17px;
-                text-align: left;
-            }
-            </style>
-    </head>
-    <body>
-        <ul>
-            <li>IT123</li>
-            <li>CT314</li>
-            <li>SC201</li>
-            <li>EL333</li>
-            <li>HM123</li>
-        </ul>
-    </body>
-</html>
+{% extends "layout.html" %}
+{% block title %}
+   List Course
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <ul class="list-group">
+      <li class="list-group-item">
+        <h4 class="list-group-item-heading">Statistical communication Theory</h4>
+        <p class="list-group-item-text">SC123</p>
+      </li>
+      <li class="list-group-item">
+        <h4 class="list-group-item-heading">Analog Circuit</h4>
+        <p class="list-group-item-text">EL314</p>
+      </li>
+      <li class="list-group-item">
+        <h4 class="list-group-item-heading">System Softwere</h4>
+        <p class="list-group-item-text">IT321</p>
+      </li>
+      <li class="list-group-item">
+            <h4 class="list-group-item-heading">Society and Politics</h4>
+            <p class="list-group-item-text">HM124</p>
+      </li>
+    </ul>
+  </div>
+{% endblock %}

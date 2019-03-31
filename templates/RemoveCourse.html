@@ -1,102 +1,21 @@
-<html>
-    <head>
-        <title>Remove Course</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% extends "layout.html" %}
+{% block title %}
+    Remove Course
+{% endblock %}
 
-        <style>
-        body {
-            font-family: Arial;
-          }
-          
-          * {
-            box-sizing: border-box;
-          }
-          
-          form.example input[type=text] {
-            padding: 10px;
-            font-size: 17px;
-            border: 1px solid grey;
-            float: left;
-            width: 80%;
-            background: #f1f1f1;
-          }
-          
-          form.example button {
-            float: left;
-            width: 20%;
-            padding: 10px;
-            background: #2196F3;
-            color: white;
-            font-size: 20px;
-            border: 1px solid grey;
-            border-left: none;
-            cursor: pointer;
-          }
-          
-          form.example button:hover {
-            background: #0b7dda;
-          }
-          
-          form.example::after {
-            content: "";
-            clear: both;
-            display: table;
-          }
-          ul {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 20px;
-            margin-right: 25%;
-            margin-left: 25%;
-            }
-
-            ul li {
-            border: 1px solid #ddd;
-            margin-top: -1px; /* Prevent double borders */
-            background-color: #f6f6f6;
-            padding: 12px;
-            text-decoration: none;
-            font-size: 18px;
-            color: black;
-            display: block;
-            position: relative;
-            }
-
-            ul li:hover {
-            background-color: #eee;
-            }
-
-            .close {
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            right: 0%;
-            padding: 16px 16px;
-            transform: translate(0%, -50%);
-            }
-            li button{
-                border: none;
-                background-color: #f6f6f6;
-            }
-            .close:hover {background: #bbb;}
-        </style>      
-    </head>
-    <body>
-            <form class="example" action="/action_page.php" style="margin:auto;max-width:300px">
-                <input type="text" placeholder="Search.." name="search2">
-                <button type="submit"><i class="fa fa-search"></i></button>
-              </form>
-              <ul>
-                <li>
-                    IT123<button class="close">X</button>
-                </li>
-                <li>
-                    CT314<button class="close">X</button>
-                </li>
-                  <li>SC201</li>
-                  <li>EL333</li>
-                  <li>HM123</li>
-              </ul>
-    </body>
-</html>
+{% block main %}
+<form class="exampleform" action="/action_page.php" style="margin:auto;max-width:300px">
+  <input type="text" placeholder="Search.." name="search2">
+  <button type="submit"><i class="fa fa-search"></i></button>
+</form>
+<ul class="courselist">
+  <li>
+      IT123<button class="closebutton">X</button>
+  </li>
+  <li>
+      CT314<button class="closebutton">X</button>
+  </li>
+    <li>SC201</li>
+    <li>EL333</li> 
+    </ul>
+{% endblock %}

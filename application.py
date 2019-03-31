@@ -44,10 +44,10 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         # query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username",{'username':username}).fetchall()
+        rows = db.execute("SELECT * FROM users WHERE mobile = :username",{'username':username}).fetchall()
         x = len(rows)
         if x == 1:
-            hash = rows[0][2]
+            hash = rows[0][4]
             user_id = rows[0][0]
             if username and password:
                 if password == hash:
