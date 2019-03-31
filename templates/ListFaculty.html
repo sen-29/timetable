@@ -4,25 +4,23 @@
 {% endblock %}
 
 {% block main %}
-<div class="container">
-    <ul class="list-group">
-      <li class="list-group-item">
-        <h4 class="list-group-item-heading">Saurabh Tiwari</h4>
-        <p class="list-group-item-text">saurabhtiwari@daiict.ac.in</p>
-      </li>
-      <li class="list-group-item">
-        <h4 class="list-group-item-heading">Rutu Parekh</h4>
-        <p class="list-group-item-text">rutuparekh@daiict.ac.in</p>
-      </li>
-      <li class="list-group-item">
-        <h4 class="list-group-item-heading">Manjunath Joshi</h4>
-        <p class="list-group-item-text">manjunathjoshi@daiict.ac.in</p>
-      </li>
-      <li class="list-group-item">
-            <h4 class="list-group-item-heading">Alka Parikh</h4>
-            <p class="list-group-item-text">alkaparikh@daiict.ac.in</p>
-      </li>
-    </ul>
-  </div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">E-mail</th>
+      <th scope="col">Mobile no</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.name }}</td>
+      <td>{{ row.email }}</td>
+      <td>{{ row.mobile }}</td>
+  </tr>
+    {% endfor %}
+  </tbody>
+</table>
         
 {% endblock %}

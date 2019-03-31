@@ -57,10 +57,11 @@
 				  <li><a href="{{ url_for('list_courses')}}">List Courses</a></li>
 				</ul>
 			      </li>
-                                <li><a href="{{ url_for('req_list') }}">Requests</a></li>
+                                <li><a href="{{ url_for('offer') }}">Offer</a></li>
+                                <li><a href="{{ url_for('slot')}}" >Slot</a></li>
                                 {% else %}
                                 <li><a href="{{ url_for('view') }}">View</a></li>
-                                <li><a href="{{ url_for('send') }}">Send Request</a></li>
+                                <li><a href="{{ url_for('preference') }}">Preference</a></li>
                                 {% endif %}
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
@@ -75,15 +76,6 @@
                     </div>
                 </div>
             </nav>
-
-            {% if get_flashed_messages() %}
-                <header>
-                    <div class="alert alert-info" role="alert">
-                        {{ get_flashed_messages() | join(" ") }}
-                    </div>
-                </header>
-            {% endif %}
-
             <main>
                 {% block main %}{% endblock %}
             </main>

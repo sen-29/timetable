@@ -4,24 +4,23 @@
 {% endblock %}
 
 {% block main %}
-<div class="container">
-    <ul class="list-group">
-      <li class="list-group-item">
-        <h4 class="list-group-item-heading">Statistical communication Theory</h4>
-        <p class="list-group-item-text">SC123</p>
-      </li>
-      <li class="list-group-item">
-        <h4 class="list-group-item-heading">Analog Circuit</h4>
-        <p class="list-group-item-text">EL314</p>
-      </li>
-      <li class="list-group-item">
-        <h4 class="list-group-item-heading">System Softwere</h4>
-        <p class="list-group-item-text">IT321</p>
-      </li>
-      <li class="list-group-item">
-            <h4 class="list-group-item-heading">Society and Politics</h4>
-            <p class="list-group-item-text">HM124</p>
-      </li>
-    </ul>
-  </div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Credit</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.id }}</td>
+      <td>{{ row.name }}</td>
+      <td>{{ row.credit }}</td>
+  </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 {% endblock %}

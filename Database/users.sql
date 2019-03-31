@@ -5,5 +5,4 @@ create table users(
 	mobile char(10) not null unique,
 	password varchar(20) not null,
 	isadmin boolean not null default false,
-	birthdate date
 );

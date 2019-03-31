@@ -6,7 +6,7 @@
 {% block main %}
     <form action="{{ url_for('login') }}" method="post">
         <fieldset>
-            {% if wrong %}
+            {% if get_flashed_messages() %}
                 <div class="alert alert-danger alert-dismissible fade in" style="width: auto; display: inline-block;">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                        Invalid <strong> Username or Password </strong> 
