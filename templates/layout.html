@@ -43,22 +43,38 @@
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Faculty
 				<span class="caret"></span></a>
 				<ul class="dropdown-menu">
-				  <li><a href="{{ url_for('add_faculty') }}">Add Faculty</a></li>
-				  <li><a href="{{ url_for('remove_faculty') }}">Remove Faculty</a></li>
-				  <li><a href="{{ url_for('list_faculty')}}">List Faculty</a></li>
+				  <li><a href="{{ url_for('add_faculty') }}">Add </a></li>
+				  <li><a href="{{ url_for('remove_faculty') }}">Remove </a></li>
+				  <li><a href="{{ url_for('list_faculty')}}">List </a></li>
 				</ul>
 			      </li>
 				<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Courses
 				<span class="caret"></span></a>
 				<ul class="dropdown-menu">
-				  <li><a href="{{ url_for('add_courses') }}">Add Courses</a></li>
-				  <li><a href="{{ url_for('remove_courses') }}">Remove Courses</a></li>
-				  <li><a href="{{ url_for('list_courses')}}">List Courses</a></li>
+				  <li><a href="{{ url_for('add_courses') }}">Add </a></li>
+				  <li><a href="{{ url_for('remove_courses') }}">Remove </a></li>
+				  <li><a href="{{ url_for('list_courses')}}">List </a></li>
 				</ul>
-			      </li>
-                                <li><a href="{{ url_for('offer') }}">Offer</a></li>
-                                <li><a href="{{ url_for('slot')}}" >Slot</a></li>
+                  </li>
+                  <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Offer
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a href="{{ url_for('add_offer') }}">Add </a></li>
+                          <li><a href="{{ url_for('remove_offer') }}">Remove </a></li>
+                          <li><a href="{{ url_for('list_offer')}}">List </a></li>
+                        </ul>
+                          </li>
+                          <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Slot
+                                <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                  <li><a href="{{ url_for('add_slot') }}">Add </a></li>
+                                  <li><a href="{{ url_for('remove_slot') }}">Remove </a></li>
+                                  <li><a href="{{ url_for('list_slot')}}">List </a></li>
+                                </ul>
+                                  </li>
                                 {% else %}
                                 <li><a href="{{ url_for('view') }}">View</a></li>
                                 <li><a href="{{ url_for('preference') }}">Preference</a></li>

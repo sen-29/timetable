@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}
+  List_Slot
+{% endblock %}
+
+{% block main %}
+<table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Slot</th>
+            <th scope="col">course_id</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            <td>{{ row.slot }}</td>
+            <td>{{ row.course_id }}</td>
+        </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+{% endblock %}

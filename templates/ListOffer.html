@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}
+    List_Offers
+{% endblock %}
+
+{% block main %}
+<table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Btech(Year)</th>
+            <th scope="col">Professor</th>
+            <th scope="col">Course</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            <td>{{ row.batch }}</td>
+            <td>{{ row.name }}</td>
+            <td>{{ row.course_id }}</td>
+        </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+{% endblock %}

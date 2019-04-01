@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block title %}
+    Preference
+{% endblock %}
+
+{% block main %}
+<form class="form-horizontal"  action="{{ url_for('preference') }}" method="post">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-danger alert-dismissible fade in" style="width: auto; display: inline-block;">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              {{message}}
+            </div>
+          {% endfor %}
+    {% else %}       
+    <table class="table  table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Time Slot</th>
+            <th scope="col">Monday</th>
+            <th scope="col">Tuesday</th>
+            <th scope="col">Wednesday</th>
+            <th scope="col">Thrusday</th>
+            <th scope="col">Friday</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">8:00-8:55</th>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="1"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="6"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="11"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="16"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="21"></label></div></td>
+          </tr>
+          <tr>
+            <th scope="row">9:00-9:55</th>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="2"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="7"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="12"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="17"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="22"></label></div></td>
+          </tr>
+          <tr>
+            <th scope="row">10:00-10:55</th>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="3"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="8"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="13"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="18"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="23"></label></div></td>
+          </tr>
+          <tr>
+            <th scope="row">11:00-11:55</th>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="4"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="9"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="14"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="19"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="24"></label></div></td>
+          </tr>
+          <tr>
+            <th scope="row">12:00-12:55</th>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="5"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="10"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="15"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="20"></label></div></td>
+            <td><div class="checkbox"><label><input type="checkbox" name="preference" value="25"></label></div></td>
+          </tr>
+        </tbody>
+        <div class="form-group"> <!-- Submit Button -->
+            <div class="col-sm-10 col-sm-offset-2">                     
+                <button type="submit" class="btn btn-primary">Add me!</button>
+            </div>
+        </div>
+        {% endif %}
+      {% endwith %} 
+{% endblock %}

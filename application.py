@@ -30,7 +30,9 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/")
 @login_required
 def index():
-    return render_template("index.html",isadmin=check_admin())
+    id = session["user_id"]
+    row = db.execute("SELECT * FROM users WHERE id=:id",{"id":id}).fetchone()
+    return render_template("index.html",isadmin=check_admin(),row=row)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -79,7 +81,12 @@ def logout():
 @app.route("/generate" , methods=["GET","POST"])
 @login_required
 def generate():
-    return render_template("login.html")
+    generate = 1
+    if request.method == "POST":
+        generate = 0
+        return render_template("generate.html",isadmin=check_admin(),generate=generate)
+    else:
+        return render_template("generate.html",isadmin=check_admin(),generate=generate)
 
 @app.route("/add_faculty" , methods=["GET","POST"])
 @login_required
@@ -106,13 +113,41 @@ def add_faculty():
     else:
         return render_template("AddFaculty.html",isadmin=check_admin())
 
+
+@app.route("/remove_faculty" , methods=["GET","POST"])
+@login_required
+def remove_faculty():
+    if request.method == "POST":
+        name = request.form.get("name")
+        mobile = request.form.get("mobile")
+        row = db.execute("SELECT * from users WHERE mobile = :mobile and isadmin = false",{"mobile":mobile}).fetchall()
+        x = len(row)
+        if x == 1:
+            db.execute("DELETE FROM users WHERE mobile = :mobile and isadmin = false",{"mobile":mobile})
+            db.commit()
+            message = Markup(name + '<strong> Succefully Deleted</strong>')
+            flash(message)
+            return render_template("RemoveFaculty.html",isadmin=check_admin())
+        else:
+            message = Markup('<strong>Faculty with this mobile no does not exist</strong>')
+            flash(message)
+            return render_template("RemoveFaculty.html",isadmin=check_admin())
+    else:
+        return render_template("RemoveFaculty.html",isadmin=check_admin())
+
+@app.route("/list_faculty")
+@login_required
+def list_faculty():
+    rows = db.execute("SELECT * FROM users WHERE isadmin = false").fetchall()
+    return render_template("ListFaculty.html",isadmin=check_admin(),rows=rows)
+
 @app.route("/add_courses" , methods=["GET","POST"])
 @login_required
 def add_courses():
     if request.method == "POST":
         name = request.form.get("name")
         courseid = request.form.get("courseid")
-        lecture = request.form.get("lecture")
+        lecture = int(request.form.get("lecture"))
         lab = float(request.form.get("lab"))
         tut = int(request.form.get("tutorial"))
         credit = lecture + tut + (lab / 2)
@@ -132,19 +167,26 @@ def add_courses():
     else:
         return render_template("AddCourse.html",isadmin=check_admin())
 
-@app.route("/remove_faculty" , methods=["GET","POST"])
-def remove_faculty():
-    return render_template("RemoveFaculty.html",isadmin=check_admin())
-
 @app.route("/remove_courses", methods=["GET","POST"])
-def remove_courses():
-    return render_template("RemoveCourse.html",isadmin=check_admin())
-
-@app.route("/list_faculty")
 @login_required
-def list_faculty():
-    rows = db.execute("SELECT * FROM users WHERE isadmin = false").fetchall()
-    return render_template("ListFaculty.html",isadmin=check_admin(),rows=rows)
+def remove_courses():
+    if request.method == "POST":
+        id = request.form.get("courseid")
+        row = db.execute("SELECT * from courses WHERE id = :id",{"id":id}).fetchall()
+        x = len(row)
+        if x == 1:
+            db.execute("DELETE FROM courses WHERE id = :id",{"id":id})
+            db.commit()
+            message = Markup(id + '<strong> Succefully Deleted</strong>')
+            flash(message)
+            return render_template("RemoveCourse.html",isadmin=check_admin())
+        else:
+            message = Markup(id + '<strong> does not exist</strong>')
+            flash(message)
+            return render_template("RemoveCourse.html",isadmin=check_admin())
+    else:
+        return render_template("RemoveCourse.html",isadmin=check_admin())
+
 
 @app.route("/list_courses")
 @login_required
@@ -152,28 +194,150 @@ def list_courses():
     rows = db.execute("SELECT * FROM courses").fetchall()
     return render_template("ListCourse.html",isadmin=check_admin(),rows=rows)
 
-@app.route("/offer", methods=["GET","POST"])
-def offer():
-    session.clear()
-    return render_template("login.html")
+@app.route("/add_offer", methods=["GET","POST"])
+@login_required
+def add_offer():
+    courses = db.execute("SELECT * FROM courses").fetchall()
+    profs = db.execute("SELECT * FROM users WHERE isadmin = false").fetchall()
+    if request.method == "POST":
+        id = request.form.get("course_id")
+        prof = request.form.get("prof")
+        year = int(request.form.get("year"))
+        exist = db.execute("SELECT * FROM offers WHERE course_id = :id",{'id':id}).fetchall()
+        x = len(exist)
+        if x == 0:
+            db.execute("INSERT INTO offers (course_id,user_id,batch) VALUES (:id,:prof,:year)",{"id":id,"prof":prof,"year":year})
+            db.commit()
+            message = Markup("<strong> Course Added </strong>")
+            flash(message)
+            return render_template('AddOffer.html',isadmin = check_admin(),profs=profs,courses = courses )
+        else:
+            message = Markup("<strong> Course already Assigned </strong>")
+            flash(message)
+            return render_template('AddOffer.html',isadmin = check_admin(),profs=profs,courses = courses)
+    else:
+        return render_template('AddOffer.html',isadmin=check_admin(),profs=profs,courses = courses)
 
-@app.route("/slot", methods=["GET","POST"])
-def slot():
-    session.clear()
-    return render_template("login.html")
+@app.route("/remove_offer", methods=["GET","POST"])
+@login_required
+def remove_offer():
+    rows = db.execute("SELECT * FROM offers").fetchall()
+    if request.method == "POST":
+        id = request.form.get("course_id")
+        exist = db.execute("SELECT * FROM offers WHERE course_id = :id",{'id':id}).fetchall()
+        x = len(exist)
+        if x == 1:
+            db.execute("DELETE FROM offers WHERE course_id = :id",{"id":id})
+            db.commit()
+            message = Markup(id + "<strong> removed from current year </strong>")
+            flash(message)
+            return render_template('RemoveOffer.html',isadmin = check_admin(),rows=rows)
+        else:
+            message = Markup("<strong> Course does not Offered </strong>")
+            flash(message)
+            return render_template('RemoveOffer.html',isadmin = check_admin(),rows=rows)
+    else:
+        return render_template('RemoveOffer.html',isadmin=check_admin(),rows=rows)
 
+
+@app.route("/list_offer")
+@login_required
+def list_offer():
+    rows = db.execute("SELECT name,course_id,batch FROM offers JOIN users ON offers.user_id = users.id ORDER BY batch").fetchall()
+    return render_template("ListOffer.html",isadmin=check_admin(),rows=rows)
+
+@app.route("/add_slot", methods=["GET","POST"])
+@login_required
+def add_slot():
+    rows = db.execute("SELECT * FROM courses").fetchall()
+    if request.method == "POST":
+        id = request.form.get("course_id")
+        slot = request.form.get("slot")
+        exist = db.execute("SELECT * FROM slots WHERE course_id = :id",{'id':id}).fetchall()
+        x = len(exist)
+        if x == 0:
+            db.execute("INSERT INTO slots (course_id,slot) VALUES (:id,:slot)",{"id":id,"slot":slot})
+            db.commit()
+            message = Markup(id + "<strong> added in slot </strong>" + slot)
+            flash(message)
+            return render_template('AddSlot.html',isadmin = check_admin(),rows=rows)
+        else:
+            message = Markup("<strong> Course already exist in other slot </strong>")
+            flash(message)
+            return render_template('AddSlot.html',isadmin = check_admin(),rows=rows)
+    else:
+        return render_template('AddSlot.html',isadmin=check_admin(),rows=rows)
+
+@app.route("/remove_slot", methods=["GET","POST"])
+@login_required
+def remove_slot():
+    rows = db.execute("SELECT * FROM slots").fetchall()
+    if request.method == "POST":
+        id = request.form.get("course_id")
+        exist = db.execute("SELECT * FROM slots WHERE course_id = :id",{'id':id}).fetchall()
+        x = len(exist)
+        if x == 1:
+            db.execute("DELETE FROM slots WHERE course_id = :id",{"id":id})
+            db.commit()
+            message = Markup(id + "<strong> Deleted From Slot </strong>")
+            flash(message)
+            return render_template('RemoveSlot.html',isadmin = check_admin(),rows=rows)
+        else:
+            message = Markup("<strong> Course does not exist in any slot </strong>")
+            flash(message)
+            return render_template('RemoveSlot.html',isadmin = check_admin(),rows=rows)
+    else:
+        return render_template('RemoveSlot.html',isadmin=check_admin(),rows=rows)
+
+@app.route("/list_slot")
+@login_required
+def list_slot():
+    rows = db.execute("SELECT * FROM slots ORDER BY slot").fetchall()
+    return render_template("ListSlot.html",isadmin=check_admin(),rows=rows)
 @app.route("/view")
+@login_required
 def view():
     session.clear()
     return render_template("login.html")
 
 @app.route("/preference", methods=["GET","POST"])
+@login_required
 def preference():
-    session.clear()
-    return render_template("login.html")
+    id = session["user_id"]
+    if request.method == "POST":
+        db.execute("DELETE FROM preferences WHERE user_id=:id",{"id":id})
+        db.commit()
+        preferences = request.form.getlist("preference")
+        for preference in preferences:
+            slot = int(preference)
+            db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":slot})
+            db.commit()
+        message = Markup("<strong> Preference is updated </strong>")
+        flash(message)
+
+    return render_template("preference.html",isadmin=check_admin())
 
 @app.route("/change_password", methods=["GET","POST"])
+@login_required
 def change_password():
+    if request.method == "POST":
+        old = request.form.get("oldpass")
+        new = request.form.get("newpass")
+        confirm = request.form.get("confirmpass")
+        id = session["user_id"]
+        row = db.execute("SELECT * FROM users WHERE id = :id",{"id":id}).fetchone()
+        password = row[4]
+        if old != password:
+            message = Markup("<strong> Password is wrong </strong>")
+            flash(message)
+        elif new!= confirm:
+            message = Markup("<strong> New Password and Confirm Password is different </strong>")
+            flash(message)
+        else:
+            db.execute("UPDATE users SET password = :password WHERE id = :id",{"password" : new,"id":id})
+            db.commit()
+            message = Markup("<strong> Password Updated </strong>")
+            flash(message)
     return render_template("ChangePassword.html",isadmin=check_admin())
 
 def check_admin():
