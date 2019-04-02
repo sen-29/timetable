@@ -297,8 +297,8 @@ def list_slot():
 @app.route("/view")
 @login_required
 def view():
-    session.clear()
-    return render_template("login.html")
+    rows = db.execute("SELECT * FROM timetable").fetchall()
+    return render_template("view.html",isadmin=check_admin())
 
 @app.route("/preference", methods=["GET","POST"])
 @login_required
