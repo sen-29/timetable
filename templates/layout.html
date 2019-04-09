@@ -37,7 +37,7 @@
                     <div class="collapse navbar-collapse" id="navbar">
                         {% if session.user_id %}
                             <ul class="nav navbar-nav">
-                                {% if isadmin is sameas true  %}
+                                {% if isadmin == 1 %}
                                 <li><a href="{{ url_for('generate') }}">Generate</a></li>
 				<li class="dropdown">
 				<a class="dropdown-toggle" data-toggle="dropdown" href="#">Faculty

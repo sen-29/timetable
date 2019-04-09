@@ -525,18 +525,18 @@ def btech4():
 
 
 
-def generate():
+def gen():
     faculty_lecture_final_map.clear()
     days = ["monday","tuesday","wednesday","thursday","friday"]
     btech1()
     btech2()
     btech3()
     btech4()
-    for fec_id in faculty_lecture_final_map:
+    for fac_id in faculty_lecture_final_map:
         for slot,batch in faculty_lecture_final_map[fac_id]:
             course_id = db.execute("SELECT course_id FROM offers WHERE user_id=:id AND batch=:batch",{"id":fac_id,"batch":batch}).fetchone()
             course_id = course_id[0]
-            day = days[(slot-1)/5]
+            day = days[math.floor((slot-1)/5)]
             day_slot = ((slot-1)%5) + 1
-            print(fac_id,course_id,day,day_slot,batch)
-            
+            db.execute("INSERT INTO timetable (user_id,course_id,batch,day,day_slot,slot) VALUES (:user_id,:course_id,:batch,:day,:day_slot,:slot)",{"user_id":fac_id,"course_id":course_id,"batch":batch,"day":day,"day_slot":day_slot,"slot":slot})
+    db.commit()            

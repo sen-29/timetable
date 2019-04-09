@@ -5,6 +5,7 @@ from tempfile import mkdtemp
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from helpers import *
+from generate import *
 import os
 # configure application
 app = Flask(__name__)
@@ -81,12 +82,14 @@ def logout():
 @app.route("/generate" , methods=["GET","POST"])
 @login_required
 def generate():
-    generate = 1
+    g = 1
     if request.method == "POST":
-        generate = 0
-        return render_template("generate.html",isadmin=check_admin(),generate=generate)
+        db.execute("DELETE FROM timetable")
+        gen()
+        g = 0
+        return render_template("generate.html",isadmin=check_admin(),generate=g)
     else:
-        return render_template("generate.html",isadmin=check_admin(),generate=generate)
+        return render_template("generate.html",isadmin=check_admin(),generate=g)
 
 @app.route("/add_faculty" , methods=["GET","POST"])
 @login_required
@@ -100,7 +103,11 @@ def add_faculty():
         row = db.execute("SELECT * from users WHERE mobile = :mobile",{'mobile':mobile}).fetchall()
         x = len(row)
         if x == 0:
-            db.execute("INSERT INTO users (name,email,mobile,password,isadmin) VALUES (:name,:email,:mobile,:password,False)",{"name": name,"email":email,"mobile":mobile,"password":password})
+            db.execute("INSERT INTO users (name,email,mobile,password,isadmin) VALUES (:name,:email,:mobile,:password,0)",{"name": name,"email":email,"mobile":mobile,"password":password})
+            for i in range(1,25):
+                id = db.execute("SELECT id FROM users WHERE mobile=:mobile",{"mobile":mobile}).fetchone()
+                id = id[0]
+                db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":i})
             db.commit()
             message = Markup('<strong>New Faculty Added</strong>')
             flash(message)
@@ -120,10 +127,10 @@ def remove_faculty():
     if request.method == "POST":
         name = request.form.get("name")
         mobile = request.form.get("mobile")
-        row = db.execute("SELECT * from users WHERE mobile = :mobile and isadmin = false",{"mobile":mobile}).fetchall()
+        row = db.execute("SELECT * from users WHERE mobile = :mobile and isadmin = 0",{"mobile":mobile}).fetchall()
         x = len(row)
         if x == 1:
-            db.execute("DELETE FROM users WHERE mobile = :mobile and isadmin = false",{"mobile":mobile})
+            db.execute("DELETE FROM users WHERE mobile = :mobile and isadmin = 0",{"mobile":mobile})
             db.commit()
             message = Markup(name + '<strong> Succefully Deleted</strong>')
             flash(message)
@@ -138,7 +145,7 @@ def remove_faculty():
 @app.route("/list_faculty")
 @login_required
 def list_faculty():
-    rows = db.execute("SELECT * FROM users WHERE isadmin = false").fetchall()
+    rows = db.execute("SELECT * FROM users WHERE isadmin = 0").fetchall()
     return render_template("ListFaculty.html",isadmin=check_admin(),rows=rows)
 
 @app.route("/add_courses" , methods=["GET","POST"])
@@ -198,7 +205,7 @@ def list_courses():
 @login_required
 def add_offer():
     courses = db.execute("SELECT * FROM courses").fetchall()
-    profs = db.execute("SELECT * FROM users WHERE isadmin = false").fetchall()
+    profs = db.execute("SELECT * FROM users WHERE isadmin = 0").fetchall()
     if request.method == "POST":
         id = request.form.get("course_id")
         prof = request.form.get("prof")
@@ -297,8 +304,9 @@ def list_slot():
 @app.route("/view")
 @login_required
 def view():
-    rows = db.execute("SELECT * FROM timetable").fetchall()
-    return render_template("view.html",isadmin=check_admin())
+    id = session["user_id"]
+    rows = db.execute("SELECT * FROM timetable WHERE user_id=:id ORDER BY slot",{"id":id}).fetchall()
+    return render_template("view.html",isadmin=check_admin(),rows=rows)
 
 @app.route("/preference", methods=["GET","POST"])
 @login_required
