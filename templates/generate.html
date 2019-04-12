@@ -5,6 +5,12 @@
 
 {% block main %}
 <form class="form-horizontal" action="{{ url_for('generate') }}" method="post">
+    {% if get_flashed_messages() %}
+        <div class="alert alert-danger alert-dismissible fade in" style="width: auto; display: inline-block;">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+               Invalid <strong> Username or Password </strong> 
+        </div>
+    {% endif %}
     {% if generate %}
     <div class="form-group"> <!-- Submit Button -->
         <div class="col-sm-10 col-sm-offset-2">                     

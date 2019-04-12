@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}
+    View
+{% endblock %}
+
+{% block main %}
+<table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Btech(Year)</th>
+            <th scope="col">Day</th>
+            <th scope="col">Time</th>
+            <th scope="col">course</th>
+            <th scope="col">Professor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            <td>{{ row.batch }}</td>
+            <td>{{ row.day }}</td>
+            {% if row['day_slot'] == 1 %}
+            <td> 8:00 - 8:50 </td>
+            {% elif row['day_slot'] == 2 %}
+            <td> 9:00 - 9:50 </td>
+            {% elif row['day_slot'] == 3 %}
+            <td> 10:00 - 10:50 </td>
+            {% elif row['day_slot'] == 4 %}
+            <td> 11:00 - 11:50 </td>
+            {% else %}
+            <td> 12:00 - 12:50 </td>
+            {% endif %}
+            <td>{{ row.course_id }}</td>
+            <td>{{ row.name }}</td>
+        </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+{% endblock %}

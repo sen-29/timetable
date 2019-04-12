@@ -1,8 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import os
+import math
 
-engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
+engine = create_engine("postgres:///cs50")
 db = scoped_session(sessionmaker(bind=engine))
 
 faculty_lecture_final_map = {}
@@ -233,14 +234,16 @@ class Time_table_with_slots:
                     self.time_table_map[preference].append((slot,weight))
                 else:
                     self.time_table_map[preference].append((slot,weight))
+        #print(self.time_table_map)
     def fill_counter(self,name):
         self.counter[name] = 0
     def add_slots(self,slot_id):
-        if slot_id not in slots_name:
+        if slot_id not in self.slots_name:
             self.slots_name.append(slot_id)
-            if slot_id in self.slot_faculty_map:
-                for faculty in self.slot_faculty_map[slot_id]:
-                    self.faculty_lectures[faculty] = []
+        if slot_id in self.slot_faculty_map:
+            for faculty in self.slot_faculty_map[slot_id]:
+                self.faculty_lectures[faculty] = []
+        #print(self.faculty_lectures)
     def make_time_table(self):
         while_count = 0
         while 1:
@@ -263,8 +266,8 @@ class Time_table_with_slots:
                             binary = 0
                             for faculty in self.slot_faculty_map[slot]:
                                 if faculty in faculty_lecture_final_map:
-                                    for slot,batch in faculty_lecture_final_map[faculty]:
-                                        if slot==preference:
+                                    for fixed_preference,batch in faculty_lecture_final_map[faculty]:
+                                        if fixed_preference==preference:
                                             binary = 1
                                             break
                             for k in range(1,6):
@@ -310,8 +313,8 @@ class Time_table_with_slots:
                     binary = 0
                     for faculty in self.slot_faculty_map[self.time_table_map[arr][0][0]]:
                         if faculty in faculty_lecture_final_map:
-                            for slot,batch in faculty_lecture_final_map[faculty]:
-                                if slot==arr:
+                            for fixed_preference,batch in faculty_lecture_final_map[faculty]:
+                                if fixed_preference==arr:
                                     binary = 1
                                     break
                         for k in range(1,6):
@@ -348,15 +351,17 @@ class Time_table_with_slots:
                     delete.append(arr)
                 else:
                     flag = 0
+                    temp = -1
                     maximum = 0
+                    #print(arr)
                     for slot,weight in self.time_table_map[arr]:
                         if self.counter[slot] == self.max_lec[slot]:
                             continue
                         binary = 0
                         for faculty in self.slot_faculty_map[slot]:
                             if faculty in faculty_lecture_final_map:
-                                for slot,batch in faculty_lecture_final_map[faculty]:
-                                    if slot==arr:
+                                for fixed_preference,batch in faculty_lecture_final_map[faculty]:
+                                    if fixed_preference==arr:
                                         binary = 1
                                         break
                             for k in range(1,6):
@@ -370,10 +375,14 @@ class Time_table_with_slots:
                         if binary==1:
                             continue
                         if weight >= maximum:
+                            #print(slot)
                             maximum = weight
                             flag = 1
                             temp = slot
                     if flag == 1:
+                        #print(temp)
+                        if temp==-1:
+                            continue
                         for faculty in self.slot_faculty_map[temp]:
                             self.faculty_lectures[faculty].append(arr)
                             self.final_time_table[arr].append(faculty)
@@ -421,7 +430,7 @@ class Time_table_with_slots:
             self.slot_faculty_map[slot].append(faculty)
         else:
             self.slot_faculty_map[slot].append(faculty)
-
+        #print(self.slot_faculty_map)
 
 
 def btech1():
@@ -465,10 +474,11 @@ def btech2():
         time_table_2.fill_the_map(fac_id,pref)
         faculty_map_2.fill_the_map(fac_id,pref)
     time_table_2.make_time_table()
+
 def btech3():
     faculty_map_3 = Faculty()
     time_table_3 = Time_table_with_slots()
-    rows = db.execute("SELECT user_id,slot FROM slots join offers ON slots.course_id = offers.course_id ").fetchall()
+    rows = db.execute("SELECT user_id,slot FROM slots join offers ON slots.course_id = offers.course_id and batch = 3").fetchall()
     max_lec = 0
     for row in rows:
         fac_id = row[0]
@@ -477,6 +487,7 @@ def btech3():
         if lec is None:
             continue
         lec = lec[0]
+        print(slot_id,fac_id,lec)
         max_lec = max(lec,max_lec)
         time_table_3.set_max_lectures(slot_id,max_lec)
         time_table_3.fill_counter(slot_id)
@@ -488,6 +499,8 @@ def btech3():
     for row in rows:
         fac_id = row[0]
         pref = row[1]
+        if fac_id not in faculty_map_3.faculty_slot_map:
+            continue
         slot_id = faculty_map_3.faculty_slot_map[fac_id]
         time_table_3.add_preference(slot_id,pref)
     time_table_3.make_weighted_preferences()
@@ -497,7 +510,7 @@ def btech3():
 def btech4():
     faculty_map_4 = Faculty()
     time_table_4 = Time_table_with_slots()
-    rows = db.execute("SELECT user_id,slot FROM slots join offers ON slots.course_id = offers.course_id ").fetchall()
+    rows = db.execute("SELECT user_id,slot FROM slots join offers ON slots.course_id = offers.course_id and batch = 4").fetchall()
     max_lec = 0
     for row in rows:
         fac_id = row[0]
@@ -506,6 +519,7 @@ def btech4():
         if lec is None:
             continue
         lec = lec[0]
+        print(slot_id,fac_id,lec)
         max_lec = max(lec,max_lec)
         time_table_4.set_max_lectures(slot_id,max_lec)
         time_table_4.fill_counter(slot_id)
@@ -517,13 +531,13 @@ def btech4():
     for row in rows:
         fac_id = row[0]
         pref = row[1]
+        if fac_id not in faculty_map_4.faculty_slot_map:
+            continue
         slot_id = faculty_map_4.faculty_slot_map[fac_id]
         time_table_4.add_preference(slot_id,pref)
     time_table_4.make_weighted_preferences()
     time_table_4.fill_the_map()
     time_table_4.make_time_table()
-
-
 
 def gen():
     faculty_lecture_final_map.clear()
@@ -538,5 +552,6 @@ def gen():
             course_id = course_id[0]
             day = days[math.floor((slot-1)/5)]
             day_slot = ((slot-1)%5) + 1
+            print(course_id,day,day_slot,fac_id,slot)
             db.execute("INSERT INTO timetable (user_id,course_id,batch,day,day_slot,slot) VALUES (:user_id,:course_id,:batch,:day,:day_slot,:slot)",{"user_id":fac_id,"course_id":course_id,"batch":batch,"day":day,"day_slot":day_slot,"slot":slot})
     db.commit()            
