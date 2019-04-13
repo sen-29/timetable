@@ -25,7 +25,7 @@ app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
+#engine = create_engine("postgres:///cs50")
 engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
 db = scoped_session(sessionmaker(bind=engine))
 
@@ -126,23 +126,23 @@ def add_faculty():
 @app.route("/remove_faculty" , methods=["GET","POST"])
 @login_required
 def remove_faculty():
+    rows = db.execute("SELECT * FROM users WHERE isadmin = 0").fetchall()
     if request.method == "POST":
-        name = request.form.get("name")
-        mobile = request.form.get("mobile")
-        row = db.execute("SELECT * from users WHERE mobile = :mobile and isadmin = 0",{"mobile":mobile}).fetchall()
+        id = request.form.get("id")
+        row = db.execute("SELECT * from users WHERE id = :id and isadmin = 0",{"id":id}).fetchall()
         x = len(row)
         if x == 1:
-            db.execute("DELETE FROM users WHERE mobile = :mobile and isadmin = 0",{"mobile":mobile})
+            db.execute("DELETE FROM users WHERE id = :id and isadmin = 0",{"id":id})
             db.commit()
             message = Markup(name + '<strong> Succefully Deleted</strong>')
             flash(message)
-            return render_template("RemoveFaculty.html",isadmin=check_admin())
+            return render_template("RemoveFaculty.html",isadmin=check_admin(),rows=rows)
         else:
-            message = Markup('<strong>Faculty with this mobile no does not exist</strong>')
+            message = Markup('<strong>Faculty does not exist</strong>')
             flash(message)
-            return render_template("RemoveFaculty.html",isadmin=check_admin())
+            return render_template("RemoveFaculty.html",isadmin=check_admin(),rows=rows)
     else:
-        return render_template("RemoveFaculty.html",isadmin=check_admin())
+        return render_template("RemoveFaculty.html",isadmin=check_admin(),rows=rows)
 
 @app.route("/list_faculty")
 @login_required
@@ -179,6 +179,7 @@ def add_courses():
 @app.route("/remove_courses", methods=["GET","POST"])
 @login_required
 def remove_courses():
+    rows = db.execute("SELECT * FROM courses").fetchall()
     if request.method == "POST":
         id = request.form.get("courseid")
         row = db.execute("SELECT * from courses WHERE id = :id",{"id":id}).fetchall()
@@ -188,13 +189,13 @@ def remove_courses():
             db.commit()
             message = Markup(id + '<strong> Succefully Deleted</strong>')
             flash(message)
-            return render_template("RemoveCourse.html",isadmin=check_admin())
+            return render_template("RemoveCourse.html",isadmin=check_admin(),rows=rows)
         else:
             message = Markup(id + '<strong> does not exist</strong>')
             flash(message)
-            return render_template("RemoveCourse.html",isadmin=check_admin())
+            return render_template("RemoveCourse.html",isadmin=check_admin(),rows=rows)
     else:
-        return render_template("RemoveCourse.html",isadmin=check_admin())
+        return render_template("RemoveCourse.html",isadmin=check_admin(),rows=rows)
 
 
 @app.route("/list_courses")
@@ -258,7 +259,7 @@ def list_offer():
 @app.route("/add_slot", methods=["GET","POST"])
 @login_required
 def add_slot():
-    rows = db.execute("SELECT * FROM courses").fetchall()
+    rows = db.execute("SELECT * FROM offers WHERE batch = 3 OR batch = 4").fetchall()
     if request.method == "POST":
         id = request.form.get("course_id")
         slot = request.form.get("slot")
