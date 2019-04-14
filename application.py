@@ -113,7 +113,7 @@ def add_faculty():
         x = len(row)
         if x == 0:
             db.execute("INSERT INTO users (name,email,mobile,password,isadmin) VALUES (:name,:email,:mobile,:password,0)",{"name": name,"email":email,"mobile":mobile,"password":password})
-            for i in range(1,25):
+            for i in range(1,26):
                 id = db.execute("SELECT id FROM users WHERE mobile=:mobile",{"mobile":mobile}).fetchone()
                 id = id[0]
                 db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":i})
@@ -341,9 +341,10 @@ def view():
 def preference():
     id = session["user_id"]
     if request.method == "POST":
-        db.execute("DELETE FROM preferences WHERE user_id=:id",{"id":id})
-        db.commit()
         preferences = request.form.getlist("preference")
+        if len(preferences) > 0:
+            db.execute("DELETE FROM preferences WHERE user_id=:id",{"id":id})
+            db.commit()
         for preference in preferences:
             slot = int(preference)
             db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":slot})
