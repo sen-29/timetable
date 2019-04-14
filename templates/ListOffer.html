@@ -4,22 +4,91 @@
 {% endblock %}
 
 {% block main %}
-<table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Btech(Year)</th>
+      <h2 class="h2">Btech First Year</h2> 
+      <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Btech(Year)</th>
             <th scope="col">Professor</th>
             <th scope="col">Course</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+            {% if row['batch'] == 1 %}
+            <tr>
+              <td>{{ row.batch }}</td>
+              <td>{{ row.name }}</td>
+              <td>{{ row.course_id }}</td>
           </tr>
-        </thead>
-        <tbody>
-          {% for row in rows %}
-          <tr>
-            <td>{{ row.batch }}</td>
-            <td>{{ row.name }}</td>
-            <td>{{ row.course_id }}</td>
-        </tr>
+          {% endif %}
           {% endfor %}
         </tbody>
       </table>
+  
+          <h2 class="h2">Btech Second Year</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Btech(Year)</th>
+              <th scope="col">Professor</th>
+              <th scope="col">Course</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+              {% if row['batch'] == 2 %}
+              <tr>
+                <td>{{ row.batch }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.course_id }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+      </table>
+  
+          <h2 class="h2">Btech Third Year</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Btech(Year)</th>
+              <th scope="col">Professor</th>
+              <th scope="col">Course</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+              {% if row['batch'] == 3 %}
+              <tr>
+                <td>{{ row.batch }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.course_id }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+      </table>
+  
+          <h2 class="h2">Btech Fourth Year</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Btech(Year)</th>
+              <th scope="col">Professor</th>
+              <th scope="col">Course</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in rows %}
+              {% if row['batch'] == 4 %}
+              <tr>
+                <td>{{ row.batch }}</td>
+                <td>{{ row.name }}</td>
+                <td>{{ row.course_id }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
 {% endblock %}
