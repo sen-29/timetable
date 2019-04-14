@@ -4,5 +4,5 @@ create table users(
 	email varchar(100) not null,
 	mobile char(10) not null unique,
 	password varchar(20) not null,
-	isadmin boolean not null default false,
+	isadmin integer not null default 0
 );
