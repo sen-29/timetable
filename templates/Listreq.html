@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}
+    List Requests
+{% endblock %}
+
+{% block main %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">Reason</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.leave_date }}</td>
+      <td>{{ row.name }}</td>
+      <td>{{ row.leave_type }}</td>
+      <td>{{ row.reason }}</td>
+  </tr>
+    {% endfor %}
+  </tbody>
+</table>
+        
+{% endblock %}

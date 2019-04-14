@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from helpers import *
 from generate import *
+from datetime import datetime
 import os
 
 # configure application
@@ -101,6 +102,12 @@ def add_faculty():
         email = request.form.get("email")
         mobile = request.form.get("mobile")
         date = request.form.get("birthdate")
+        current_date = datetime.now()
+        current_year = current_date.year
+        if int(date) >= current_year or abs(current_year-int(date)) > 200:
+            message = Markup('<strong>Please Enter Right Year</strong>')
+            flash(message)
+            return render_template("AddFaculty.html",isadmin=check_admin())
         password = date 
         row = db.execute("SELECT * from users WHERE mobile = :mobile",{'mobile':mobile}).fetchall()
         x = len(row)
@@ -310,6 +317,14 @@ def remove_slot():
 def list_slot():
     rows = db.execute("SELECT * FROM slots ORDER BY slot").fetchall()
     return render_template("ListSlot.html",isadmin=check_admin(),rows=rows)
+
+@app.route("/list_req")
+@login_required
+def list_req():
+    cur_date = datetime.now()
+    rows = db.execute("SELECT * FROM requests JOIN users ON users.id=requests.user_id AND leave_date > :cur_date ORDER BY leave_date",{"cur_date":cur_date}).fetchall()
+    return render_template("Listreq.html",isadmin=check_admin(),rows=rows)
+
 @app.route("/view")
 @login_required
 def view():
@@ -360,6 +375,25 @@ def change_password():
             message = Markup("<strong> Password Updated </strong>")
             flash(message)
     return render_template("ChangePassword.html",isadmin=check_admin())
+
+@app.route("/requests", methods=["GET","POST"])
+@login_required
+def requests():
+    if request.method == "POST":
+        id = session["user_id"]
+        type_req = request.form.get("type")
+        reason = request.form.get("reason")
+        date = request.form.get("leavedate")
+        current_date = str(datetime.now())
+        if(current_date < date):
+            db.execute("INSERT INTO requests (user_id,leave_type,reason,leave_date) VALUES (:id,:type_req,:reason,:date)",{"id":id,"type_req":type_req,"reason":reason,"date":date})
+            db.commit()
+            message = Markup("<strong> Your Request Succefully sended </strong>")
+            flash(message)
+        else:
+            message = Markup("<strong> Please Enter Right Date </strong>")
+            flash(message)
+    return render_template("FormforLeave.html",isadmin=check_admin())
 
 def check_admin():
     x = db.execute("SELECT isadmin from users WHERE id = :id",{'id':session["user_id"]}).fetchone()

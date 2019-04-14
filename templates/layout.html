@@ -76,8 +76,10 @@
                                   <li><a href="{{ url_for('list_slot')}}">List </a></li>
                                 </ul>
                                   </li>
+                                  <li><a href="{{ url_for('list_req') }}">Requests</a></li>
                                 {% else %}
                                 <li><a href="{{ url_for('preference') }}">Preference</a></li>
+                                <li><a href="{{ url_for('requests') }}" >Request</a></li>
                                 {% endif %}
                             </ul>
                             <ul class="nav navbar-nav navbar-right">
