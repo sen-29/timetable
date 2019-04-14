@@ -25,8 +25,8 @@ app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-#engine = create_engine("postgres:///cs50")
-engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
+engine = create_engine("postgres:///cs50")
+#engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
 db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
@@ -128,12 +128,14 @@ def add_faculty():
 def remove_faculty():
     rows = db.execute("SELECT * FROM users WHERE isadmin = 0").fetchall()
     if request.method == "POST":
-        id = request.form.get("id")
+        id = int(request.form.get("id"))
         row = db.execute("SELECT * from users WHERE id = :id and isadmin = 0",{"id":id}).fetchall()
         x = len(row)
         if x == 1:
+            name = row[0][1]
             db.execute("DELETE FROM users WHERE id = :id and isadmin = 0",{"id":id})
             db.commit()
+            rows = db.execute("SELECT * FROM users WHERE isadmin = 0").fetchall()
             message = Markup(name + '<strong> Succefully Deleted</strong>')
             flash(message)
             return render_template("RemoveFaculty.html",isadmin=check_admin(),rows=rows)
@@ -181,13 +183,15 @@ def add_courses():
 def remove_courses():
     rows = db.execute("SELECT * FROM courses").fetchall()
     if request.method == "POST":
-        id = request.form.get("courseid")
+        id = request.form.get("id")
         row = db.execute("SELECT * from courses WHERE id = :id",{"id":id}).fetchall()
         x = len(row)
         if x == 1:
+            name = row[0][1]
             db.execute("DELETE FROM courses WHERE id = :id",{"id":id})
             db.commit()
-            message = Markup(id + '<strong> Succefully Deleted</strong>')
+            rows = db.execute("SELECT * FROM courses").fetchall()
+            message = Markup(name + '<strong> Succefully Deleted</strong>')
             flash(message)
             return render_template("RemoveCourse.html",isadmin=check_admin(),rows=rows)
         else:
@@ -239,6 +243,7 @@ def remove_offer():
         if x == 1:
             db.execute("DELETE FROM offers WHERE course_id = :id",{"id":id})
             db.commit()
+            rows = db.execute("SELECT * FROM offers").fetchall()
             message = Markup(id + "<strong> removed from current year </strong>")
             flash(message)
             return render_template('RemoveOffer.html',isadmin = check_admin(),rows=rows)
@@ -289,6 +294,7 @@ def remove_slot():
         if x == 1:
             db.execute("DELETE FROM slots WHERE course_id = :id",{"id":id})
             db.commit()
+            rows = db.execute("SELECT * FROM slots").fetchall()
             message = Markup(id + "<strong> Deleted From Slot </strong>")
             flash(message)
             return render_template('RemoveSlot.html',isadmin = check_admin(),rows=rows)
