@@ -3,8 +3,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 import os
 import math
 
-engine = create_engine("postgres:///tat")
-#engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
+#engine = create_engine("postgres:///tat")
+engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
 db = scoped_session(sessionmaker(bind=engine))
 
 faculty_lecture_final_map = {}
@@ -437,43 +437,45 @@ class Time_table_with_slots:
 def btech1():
     faculty_map_1 = Faculty()
     time_table_1 = Time_table()
-    rows = db.execute("SELECT * FROM preferences NATURAL JOIN offers WHERE batch = 1").fetchall()
+    rows = db.execute("SELECT * FROM offers WHERE batch = 1").fetchall()
     for row in rows:
         fac_id = row[0]
-        pref = row[1]
         lec = db.execute("SELECT lecture FROM courses join offers ON courses.id = offers.course_id AND user_id =:id AND batch = 1",{"id":fac_id}).fetchone()
         if lec is None:
             continue
         lec = lec[0]
-        print(fac_id,pref,lec)
         faculty_map_1.set_max_lectures(fac_id,lec)
         time_table_1.set_max_lectures(fac_id,lec)
         time_table_1.fill_counter(fac_id)
         time_table_1.add_faculty(fac_id)
         time_table_1.set_batch(1)
-        time_table_1.fill_the_map(fac_id,pref)
-        faculty_map_1.fill_the_map(fac_id,pref)
+        preferences = db.execute("SELECT * FROM preferences WHERE user_id=:id",{"id":fac_id}).fetchall()
+        for preference in preferences:
+            pref = preference[1];    
+            time_table_1.fill_the_map(fac_id,pref)
+            faculty_map_1.fill_the_map(fac_id,pref)
     time_table_1.make_time_table()
 
 def btech2():
     faculty_map_2 = Faculty()
     time_table_2 = Time_table()
-    rows = db.execute("SELECT * FROM preferences NATURAL JOIN offers WHERE batch = 2").fetchall()
+    rows = db.execute("SELECT * FROM offers WHERE batch = 2").fetchall()
     for row in rows:
         fac_id = row[0]
-        pref = row[1]
         lec = db.execute("SELECT lecture FROM courses join offers ON courses.id = offers.course_id AND user_id =:id AND batch = 2",{"id":fac_id}).fetchone()
         if lec is None:
             continue
         lec = lec[0]
-        print(fac_id,pref,lec)
         faculty_map_2.set_max_lectures(fac_id,lec)
         time_table_2.set_max_lectures(fac_id,lec)
         time_table_2.fill_counter(fac_id)
         time_table_2.add_faculty(fac_id)
         time_table_2.set_batch(2)
-        time_table_2.fill_the_map(fac_id,pref)
-        faculty_map_2.fill_the_map(fac_id,pref)
+        preferences = db.execute("SELECT * FROM preferences WHERE user_id=:id",{"id":fac_id}).fetchall()
+        for preference in preferences:
+            pref = preference[1];    
+            time_table_2.fill_the_map(fac_id,pref)
+            faculty_map_2.fill_the_map(fac_id,pref)
     time_table_2.make_time_table()
 
 def btech3():

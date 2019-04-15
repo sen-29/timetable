@@ -26,8 +26,9 @@ app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-engine = create_engine("postgres:///tat")
-#engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
+
+#engine = create_engine("postgres:///tat")
+engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
 db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
@@ -113,10 +114,6 @@ def add_faculty():
         x = len(row)
         if x == 0:
             db.execute("INSERT INTO users (name,email,mobile,password,isadmin) VALUES (:name,:email,:mobile,:password,0)",{"name": name,"email":email,"mobile":mobile,"password":password})
-            for i in range(1,26):
-                id = db.execute("SELECT id FROM users WHERE mobile=:mobile",{"mobile":mobile}).fetchone()
-                id = id[0]
-                db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":i})
             db.commit()
             message = Markup('<strong>New Faculty Added</strong>')
             flash(message)
@@ -344,15 +341,10 @@ def preference():
         preferences = request.form.getlist("preference")
         db.execute("DELETE FROM preferences WHERE user_id=:id",{"id":id})
         db.commit()
-        if len(preferences) == 0:
-            for i in range(1,26):
-                db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":i})
-                db.commit()
-        else:
-            for preference in preferences:
-                slot = int(preference)
-                db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":slot})
-                db.commit()
+        for preference in preferences:
+            slot = int(preference)
+            db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":slot})
+            db.commit()
         message = Markup("<strong> Preference is updated </strong>")
         flash(message)
 
