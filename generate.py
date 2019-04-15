@@ -437,7 +437,7 @@ class Time_table_with_slots:
 def btech1():
     faculty_map_1 = Faculty()
     time_table_1 = Time_table()
-    rows = db.execute("SELECT * FROM preferences").fetchall()
+    rows = db.execute("SELECT * FROM preferences NATURAL JOIN offers WHERE batch = 1").fetchall()
     for row in rows:
         fac_id = row[0]
         pref = row[1]
@@ -458,7 +458,7 @@ def btech1():
 def btech2():
     faculty_map_2 = Faculty()
     time_table_2 = Time_table()
-    rows = db.execute("SELECT * FROM preferences").fetchall()
+    rows = db.execute("SELECT * FROM preferences NATURAL JOIN offers WHERE batch = 2").fetchall()
     for row in rows:
         fac_id = row[0]
         pref = row[1]
@@ -496,7 +496,7 @@ def btech3():
         time_table_3.fill_slot_to_faculty_map(slot_id,fac_id)
         faculty_map_3.add_faculty_and_slot(fac_id,slot_id)
         time_table_3.add_slots(slot_id)
-    rows = db.execute("SELECT * FROM preferences").fetchall()
+    rows = db.execute("SELECT * FROM preferences NATURAL JOIN offers WHERE batch = 3").fetchall()
     for row in rows:
         fac_id = row[0]
         pref = row[1]
@@ -528,7 +528,7 @@ def btech4():
         time_table_4.fill_slot_to_faculty_map(slot_id,fac_id)
         faculty_map_4.add_faculty_and_slot(fac_id,slot_id)
         time_table_4.add_slots(slot_id)
-    rows = db.execute("SELECT * FROM preferences").fetchall()
+    rows = db.execute("SELECT * FROM preferences NATURAL JOIN offers WHERE batch = 4").fetchall()
     for row in rows:
         fac_id = row[0]
         pref = row[1]
