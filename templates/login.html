@@ -6,12 +6,16 @@
 {% block main %}
     <form action="{{ url_for('login') }}" method="post">
         <fieldset>
-            {% if get_flashed_messages() %}
+            {% with messages = get_flashed_messages() %}
+	        {% if messages %}
+	        {% for message in messages %}
                 <div class="alert alert-danger alert-dismissible fade in" style="width: auto; display: inline-block;">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                       Invalid <strong> Username or Password </strong> 
+                    {{message}}
                 </div>
+                {% endfor %}
             {% endif %}
+            {% endwith %}
             <div class="form-group">
                 <input autocomplete="off" autofocus class="form-control" name="username" placeholder="Mobile No." type="text" required/>
             </div>

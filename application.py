@@ -26,7 +26,7 @@ app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-engine = create_engine("postgres:///cs50")
+engine = create_engine("postgres:///tat")
 #engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
 db = scoped_session(sessionmaker(bind=engine))
 
@@ -58,12 +58,12 @@ def login():
                     session["user_id"] = user_id
                     return redirect(url_for("index"))
                 else:
-                    message = Markup("<h1>Hello</h1>")
+                    message = Markup("Password is Wrong")
                     flash(message)
                     return render_template("login.html")
                     
         else:
-            message = Markup()
+            message = Markup("User with this mobile no. doesn't exist")
             flash(message)
             return render_template("login.html")
 
@@ -342,13 +342,17 @@ def preference():
     id = session["user_id"]
     if request.method == "POST":
         preferences = request.form.getlist("preference")
-        if len(preferences) > 0:
-            db.execute("DELETE FROM preferences WHERE user_id=:id",{"id":id})
-            db.commit()
-        for preference in preferences:
-            slot = int(preference)
-            db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":slot})
-            db.commit()
+        db.execute("DELETE FROM preferences WHERE user_id=:id",{"id":id})
+        db.commit()
+        if len(preferences) == 0:
+            for i in range(1,26):
+                db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":i})
+                db.commit()
+        else:
+            for preference in preferences:
+                slot = int(preference)
+                db.execute("INSERT INTO preferences (user_id,slot) VALUES (:id,:slot)",{"id":id,"slot":slot})
+                db.commit()
         message = Markup("<strong> Preference is updated </strong>")
         flash(message)
 
@@ -398,4 +402,9 @@ def requests():
 
 def check_admin():
     x = db.execute("SELECT isadmin from users WHERE id = :id",{'id':session["user_id"]}).fetchone()
+    if len(x) == 0:
+        session.clear()
+        message = Markup("Something goes wrong login again")
+        flash(message)
+        return render_template("login.html")
     return x[0]

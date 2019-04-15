@@ -1,4 +1,4 @@
-###Courses
+--Courses
 
 
 INSERT INTO COURSES VALUES('CT111','Introduction to Communication Systems',3,3,0,4.5);
@@ -56,58 +56,59 @@ INSERT INTO COURSES VALUES('SC322','Introduction to Graph Theory',3,0,1,4);
 INSERT INTO COURSES VALUES('SC555','Intro to Machine Learning',3,3,0,4.5);
 
 
-###Users
+---Users
 
 
-INSERT INTO USERS VALUES ('Olivia Smith','oliviasmith83@gmail.com','1234567890','2000',1);
-INSERT INTO USERS VALUES ('Cora JONES','corajones77@gmail.com','2148566473','2000',0);
-INSERT INTO USERS VALUES ('Amelia BROWN','ameliabrown93@gmail.com','2175386976','2000',0);
-INSERT INTO USERS VALUES ('Charlotte JOHNSON','charlottejohnson86@gmail.com','5922199961','2000',0);
-INSERT INTO USERS VALUES ('Isla WILLIAMS','islawilliams49@gmail.com','6422500845','2000',0);
-INSERT INTO USERS VALUES ('Isabella MILLER','isabellamiller62@gmail.com','4796685918','2000',0);
-INSERT INTO USERS VALUES ('Maia TAYLOR','maiataylor90@gmail.com','4384750786','2000',0);
-INSERT INTO USERS VALUES ('Aurora WILSON','aurorawilson63@gmail.com','5988121525','2000',0);
-INSERT INTO USERS VALUES ('Amara DAVIS','amaradavis40@gmail.com','6977246351','2000',0);
-INSERT INTO USERS VALUES ('Ava WHITE','avawhite72@gmail.com','8396766113','2000',0);
-INSERT INTO USERS VALUES ('Rumi CLARK','rumiclark11@yahoo.com','5657840257','2000',0);
-INSERT INTO USERS VALUES ('Penelope HALL','penelopehall67@gmail.com','9396917940','2000',0);
-INSERT INTO USERS VALUES ('Evelyn THOMAS','evelynthomas82@yahoo.com','5182159823','2000',0);
-INSERT INTO USERS VALUES ('Ophelia HOMPSON','opheliathompson62@gmail.com','3348521171','2000',0);
-INSERT INTO USERS VALUES ('Rose MOORE','rosemoore67@gmail.com','4824856917','2000',0);
-INSERT INTO USERS VALUES ('Eleanor HILL','eleanorhill29@gmail.com','3417585994','2000',0);
-INSERT INTO USERS VALUES ('Violet WALKER','violetwalker22@gmail.com','5844688186','2000',0);
-INSERT INTO USERS VALUES ('Luna ANDERSON','lunaanderson69@gmail.com','6767266490','2000',0);
-INSERT INTO USERS VALUES ('Arabella WRIGHT','arabellawright93@gmail.com','4964805088','2000',0);
-INSERT INTO USERS VALUES ('Hazel MARTIN','hazelmartin11@gmail.com','3409005597','2000',0);
-INSERT INTO USERS VALUES ('Imogen WOOD','imogenwood29@gmail.com','4373074525','2000',0);
-INSERT INTO USERS VALUES ('Esme ALLEN','esmeallen21@yahoo.com','6833250962','2000',0);
-INSERT INTO USERS VALUES ('Asher LEWIS','asherlewis98@yahoo.com','2575950281','2000',0);
-INSERT INTO USERS VALUES ('Jack SCOTT','jackscott15@gmail.com','8163612533','2000',0);
-INSERT INTO USERS VALUES ('Theodore YOUNG','theodoreyoung13@gmail.com','4448584045','2000',0);
-INSERT INTO USERS VALUES ('Jasper JACKSON','jasperjackson91@yahoo.com','5008001491','2000',0);
-INSERT INTO USERS VALUES ('Milo ADAMS','miloadams56@gmail.com','7189541708','2000',0);
-INSERT INTO USERS VALUES ('Oliver TRYNISKI','olivertryniski62@yahoo.com','3436154611','2000',0);
-INSERT INTO USERS VALUES ('Silas GREEN','silasgreen96@gmail.com','6335060706','2000',0);
-INSERT INTO USERS VALUES ('Henry EVANS','henryevans5@gmail.com','3472155143','2000',0);
-INSERT INTO USERS VALUES ('Wyatt KING','wyattking84@gmail.com','5032306305','2000',0);
-INSERT INTO USERS VALUES ('Leo BAKER','leobaker36@yahoo.com','3442699854','2000',0);
-INSERT INTO USERS VALUES ('Oscar JOHN','oscarjohn46@gmail.com','4936507345','2000',0);
-INSERT INTO USERS VALUES ('Declan HARRIS','declanharris13@yahoo.com','5068423964','2000',0);
-INSERT INTO USERS VALUES ('Xavier ROBERTS','xavierroberts24@gmail.com','8333910533','2000',0);
-INSERT INTO USERS VALUES ('Felix CAMPBELL','felixcampbell82@gmail.com','5189999254','2000',0);
-INSERT INTO USERS VALUES ('Levi JAMES','levijames14@gmail.com','9427749379','2000',0);
-INSERT INTO USERS VALUES ('Finn STEWART','finnstewart34@yahoo.com','8355687411','2000',0);
-INSERT INTO USERS VALUES ('Matthew LEE','matthewlee43@yahoo.com','6093219669','2000',0);
-INSERT INTO USERS VALUES ('Axel HARRIS','axelharris76@yahoo.com','4398786089','2000',0);
-INSERT INTO USERS VALUES ('Sebastian ROBERTS','sebastianroberts88@gmail.com','4849744873','2000',0);
-INSERT INTO USERS VALUES ('Arthur CAMPBELL','arthurcampbell3@yahoo.com','5735617228','2000',0);
-INSERT INTO USERS VALUES ('Bodhi JAMES','bodhijames54@gmail.com','8719950391','2000',0);
-INSERT INTO USERS VALUES ('Alexander STEWART','alexanderstewart32@gmail.com','8579996163','2000',0);
-INSERT INTO USERS VALUES ('Kai LEE','kailee76@gmail.com','9243278849','2000',0);
-INSERT INTO USERS VALUES ('Ethan WOOD','ethanwood39@gmail.com','8639302773','2000',0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Olivia SMITH','oliviasmith83@gmail.com', '0123456789', '2000', 1);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Cora JONES','corajones77@gmail.com', '2148566473', 'BEFSarcb', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Amelia BROWN','ameliabrown93@gmail.com', '2175386976', 'BLNSadeu', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Charlotte JOHNSON','charlottejohnson86@gmail.com', '5922199961', 'CGDEwht', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Isla WILLIAMS','islawilliams49@gmail.com', '6422500845', 'CIOHordt', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Isabella MILLER','isabellamiller62@gmail.com', '4796685918', 'CQCOendt', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Maia TAYLOR','maiataylor90@gmail.com', '4384750786', 'DDQScdxr', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Aurora WILSON','aurorawilson63@gmail.com', '5988121525', 'DGWPbtr', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Amara DAVIS','amaradavis40@gmail.com', '6977246351', 'DVMXxrdr', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Ava WHITE','avawhite72@gmail.com', '8396766113', 'EQLWphap', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Rumi CLARK','rumiclark11@yahoo.com', '5657840257', 'FSKPggkb', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Penelope HALL','penelopehall67@gmail.com', '9396917940', 'FYKGruow', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Evelyn THOMAS','evelynthomas82@yahoo.com', '5182159823', 'GPXIqvku', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Ophelia THOMPSON','opheliathompson62@gmail.com', '3348521171', 'GUWNnyqx', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Rose MOORE','rosemoore67@gmail.com', '4824856917', 'IAJXlog', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Eleanor HILL','eleanorhill29@gmail.com', '3417585994', 'IHJOuvsu', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Violet WALKER','violetwalker22@gmail.com', '5844688186', 'IOOObpp', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Luna ANDERSON','lunaanderson69@gmail.com', '6767266490', 'IQFMzhl', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Arabella WRIGHT','arabellawright93@gmail.com', '4964805088', 'JIVSwmdk', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Hazel MARTIN','hazelmartin11@gmail.com', '3409005597', 'KPQPxrjx', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Imogen WOOD','imogenwood29@gmail.com', '4373074525', 'KVWCsgs', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Esme ALLEN','esmeallen21@yahoo.com', '6833250962', 'MFGDwdwf', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Asher LEWIS','asherlewis98@yahoo.com', '2575950281', 'MLEJuukw', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Jack SCOTT','jackscott15@gmail.com', '8163612533', 'MUOTehzr', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Theodore YOUNG','theodoreyoung13@gmail.com', '4448584045', 'MYPPphau', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Jasper JACKSON','jasperjackson91@yahoo.com', '5008001491', 'NECDyggx', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Milo ADAMS','miloadams56@gmail.com', '7189541708', 'NMPApqfw', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Oliver TRYNISKI','olivertryniski62@yahoo.com', '3436154611', 'OKYXhoac', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Silas GREEN','silasgreen96@gmail.com', '6335060706', 'PKLOrel', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Henry EVANS','henryevans5@gmail.com', '3472155143', 'PKMCoqh', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Wyatt KING','wyattking84@gmail.com', '5032306305', 'QHDCnvwd', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Leo BAKER','leobaker36@yahoo.com', '3442699854', 'QHFFbsa', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Oscar JOHN','oscarjohn46@gmail.com', '4936507345', 'QOQMsbo', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Declan HARRIS','declanharris13@yahoo.com', '5068423964', 'RBLJptns', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Xavier ROBERTS','xavierroberts24@gmail.com', '8333910533', 'RWSOfsbc', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Felix CAMPBELL','felixcampbell82@gmail.com', '5189999254', 'TBXIxmvt', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Levi JAMES','levijames14@gmail.com', '9427749379', 'TZYXacbh', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Finn STEWART','finnstewart34@yahoo.com', '8355687411', 'UBUMenm', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Matthew LEE','matthewlee43@yahoo.com', '6093219669', 'UUMOqcdr', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Axel HARRIS','axelharris76@yahoo.com', '4398786089', 'WLRBbmqb', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Sebastian ROBERTS','sebastianroberts88@gmail.com', '4849744873', 'WNKUewhs', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Arthur CAMPBELL','arthurcampbell3@yahoo.com', '5735617228', 'WZQFjmaf', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Bodhi JAMES','bodhijames54@gmail.com', '8719950391', 'XLMNdqtu', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Alexander STEWART','alexanderstewart32@gmail.com', '8579996163', 'XWPQcace', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Kai LEE','kailee76@gmail.com', '9243278849', 'YATDrmy', 0);
+INSERT INTO users (name,email,mobile,password,isadmin) VALUES ('Ethan WOOD','ethanwood39@gmail.com', '8639302773', 'YPAYulye', 0);
 
 
-###Offers
+
+---Offers
 
 
 insert into offers Values(2,'CT111',1);
@@ -165,7 +166,7 @@ insert into offers Values(13,'SC322',4);
 insert into offers Values(14,'SC555',4);
 
 
-###Slot
+---Slot
 
 
 INSERT INTO SLOTS VALUES('CS201',1);
@@ -211,7 +212,7 @@ INSERT INTO SLOTS VALUES('SC322',8);
 INSERT INTO SLOTS VALUES('SC555',8);
 
 
-####Preference
+---Preference
 
 
 INSERT INTO PREFERENCES VALUES (2,2);
