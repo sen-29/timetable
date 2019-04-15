@@ -2,12 +2,19 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import os
 import math
+import random
 
 #engine = create_engine("postgres:///tat")
 engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
 db = scoped_session(sessionmaker(bind=engine))
 
 faculty_lecture_final_map = {}
+
+unsuccessful = 0
+lecture_exceed_1 = 0
+lecture_exceed_2 = 0
+lecture_exceed_3 = 0
+lecture_exceed_4 = 0
 
 class Faculty:
     def __init__(self):
@@ -60,8 +67,14 @@ class Time_table:
         while 1:
             delete = []
             while_count += 1
+
+            if while_count >= 100:
+                #print("Click on generate button again please")    
+                unsuccessful = 1
+                break
+
             if while_count >= 5:
-                while_count = 1
+                #while_count = 1
                 for name in self.faculties_name:
                     if self.max_lec[name] == self.counter[name]:
                         continue
@@ -71,7 +84,7 @@ class Time_table:
                         for j in range(1,6):
                             if self.max_lec[name] == self.counter[name]:
                                 break
-                            preference = (i-1)*5 + j
+                            preference = (random.randint(1,5)-1)*5 + random.randint(1,5)
                             if preference in self.blocked_slot:
                                 continue
                             binary = 0
@@ -147,7 +160,7 @@ class Time_table:
                     else:
                         faculty_lecture_final_map[temp].append((arr,self.batch))
                     self.blocked_slot.append(arr)
-                    while_count = 0
+                    #while_count = 0
                     for i in range(1,6):
                         temp_preference = (arr-1)/5
                         temp_preference = temp_preference*5
@@ -184,7 +197,7 @@ class Time_table:
                             flag = 1
                             temp = prof
                     if flag == 1:
-                        while_count = 0
+                        #while_count = 0
                         self.faculty_lectures[temp].append(arr)
                         self.final_time_table[arr] = temp
                         self.counter[temp] += 1
@@ -246,13 +259,37 @@ class Time_table_with_slots:
                 self.faculty_lectures[faculty] = []
         #print(self.faculty_lectures)
     def make_time_table(self):
+        #print(self.slots_name)
+        #print(self.slot_faculty_map)
+        tot_lec = 0
+        for slot in self.slots_name:
+            tot_lec += self.max_lec[slot]
+        
+        if tot_lec > 25:
+            if self.batch == 3:
+                lecture_exceed_3 = 1
+            else:
+                lecture_exceed_4 = 1
+            return
+
         while_count = 0
         while 1:
             delete = []
             while_count += 1
+            #print(while_count)
+
+            
+            if while_count >= 100:
+                #print("Click on generate button again please")    
+                unsuccessful = 1
+                break
+
             if while_count >= 5:
-                while_count = 0
+                #while_count = 0
                 for slot in self.slots_name:
+                    #print(slot)
+                    #print(self.counter[slot],slot)
+                    
                     if self.max_lec[slot] == self.counter[slot]:
                         continue
                     for i in range(1,6):
@@ -261,7 +298,7 @@ class Time_table_with_slots:
                         for j in range(1,6):
                             if self.max_lec[slot] == self.counter[slot]:
                                 break
-                            preference = (i-1)*5 + j
+                            preference = (random.randint(1,5)-1)*5 + random.randint(1,5)
                             if preference in self.blocked_slot:
                                 continue
                             binary = 0
@@ -271,12 +308,16 @@ class Time_table_with_slots:
                                         if fixed_preference==preference:
                                             binary = 1
                                             break
+                            #print(binary)
                             for k in range(1,6):
                                 temp_preference = (i-1)*5 + k
+                                #print(binary)
                                 if temp_preference in self.blocked_slot and temp_preference in self.final_time_table:
                                     if self.slot_faculty_map[slot][0] in self.final_time_table[temp_preference]:
                                         binary = 1
+                                        #print(self.slot_faculty_map[slot][0],self.final_time_table[temp_preference])
                                         break
+                            #print(binary)
                             if binary == 0:
                                 if preference not in self.blocked_slot:
                                     for faculty in self.slot_faculty_map[slot]:
@@ -295,7 +336,7 @@ class Time_table_with_slots:
                                             if slots == slot:
                                                 self.time_table_map[temp_preference].remove((slots,weight))
                                     self.blocked_slot.append(preference)
-                                    while_count = 0
+                                    #while_count = 0
                                     delete.append(preference)
             cnt = 0
             for name in self.slots_name:
@@ -348,7 +389,7 @@ class Time_table_with_slots:
                             if temp == slot:
                                 self.time_table_map[temp_preference].remove((slot,weight))
                     self.blocked_slot.append(arr)
-                    while_count = 0
+                    #while_count = 0
                     delete.append(arr)
                 else:
                     flag = 0
@@ -402,7 +443,7 @@ class Time_table_with_slots:
                                 if slot == temp:
                                     self.time_table_map[temp_preference].remove((slot,weight))
                         self.blocked_slot.append(arr)
-                        while_count = 0
+                        #while_count = 0
                         delete.append(arr)
             for x in delete:
                 if x in self.time_table_map:
@@ -438,12 +479,14 @@ def btech1():
     faculty_map_1 = Faculty()
     time_table_1 = Time_table()
     rows = db.execute("SELECT * FROM offers WHERE batch = 1").fetchall()
+    total_lec = 0
     for row in rows:
         fac_id = row[0]
         lec = db.execute("SELECT lecture FROM courses join offers ON courses.id = offers.course_id AND user_id =:id AND batch = 1",{"id":fac_id}).fetchone()
         if lec is None:
             continue
         lec = lec[0]
+        total_lec += lec
         faculty_map_1.set_max_lectures(fac_id,lec)
         time_table_1.set_max_lectures(fac_id,lec)
         time_table_1.fill_counter(fac_id)
@@ -451,21 +494,26 @@ def btech1():
         time_table_1.set_batch(1)
         preferences = db.execute("SELECT * FROM preferences WHERE user_id=:id",{"id":fac_id}).fetchall()
         for preference in preferences:
-            pref = preference[1];    
+            pref = preference[1]  
             time_table_1.fill_the_map(fac_id,pref)
             faculty_map_1.fill_the_map(fac_id,pref)
+    if total_lec > 25:
+        lecture_exceed_1 = 1
+        return
     time_table_1.make_time_table()
 
 def btech2():
     faculty_map_2 = Faculty()
     time_table_2 = Time_table()
     rows = db.execute("SELECT * FROM offers WHERE batch = 2").fetchall()
+    total_lec = 0
     for row in rows:
         fac_id = row[0]
         lec = db.execute("SELECT lecture FROM courses join offers ON courses.id = offers.course_id AND user_id =:id AND batch = 2",{"id":fac_id}).fetchone()
         if lec is None:
             continue
         lec = lec[0]
+        total_lec += lec
         faculty_map_2.set_max_lectures(fac_id,lec)
         time_table_2.set_max_lectures(fac_id,lec)
         time_table_2.fill_counter(fac_id)
@@ -473,9 +521,12 @@ def btech2():
         time_table_2.set_batch(2)
         preferences = db.execute("SELECT * FROM preferences WHERE user_id=:id",{"id":fac_id}).fetchall()
         for preference in preferences:
-            pref = preference[1];    
+            pref = preference[1]
             time_table_2.fill_the_map(fac_id,pref)
             faculty_map_2.fill_the_map(fac_id,pref)
+    if total_lec > 25:
+        lecture_exceed_2 = 1
+        return
     time_table_2.make_time_table()
 
 def btech3():
@@ -509,7 +560,7 @@ def btech3():
     time_table_3.make_weighted_preferences()
     time_table_3.fill_the_map()
     time_table_3.make_time_table()
-
+    
 def btech4():
     faculty_map_4 = Faculty()
     time_table_4 = Time_table_with_slots()
@@ -541,7 +592,7 @@ def btech4():
     time_table_4.make_weighted_preferences()
     time_table_4.fill_the_map()
     time_table_4.make_time_table()
-
+    
 def gen():
     faculty_lecture_final_map.clear()
     days = ["monday","tuesday","wednesday","thursday","friday"]
@@ -549,6 +600,23 @@ def gen():
     btech2()
     btech3()
     btech4()
+
+    if unsuccessful == 1:
+        print("Click on generate button again!!!!")
+        return
+    if lecture_exceed_1 == 1:
+        print("Total number of lectures of all faculties of B-Tech-1 should not be greater than 25.")
+        return
+    if lecture_exceed_2 == 1:
+        print("Total number of lectures of all faculties of B-Tech-2 should not be greater than 25.")
+        return
+    if lecture_exceed_3 == 1:
+        print("Total number of lectures of all faculties of B-Tech-3 should not be greater than 25.")
+        return
+    if lecture_exceed_4 == 1:
+        print("Total number of lectures of all faculties of B-Tech-4 should not be greater than 25.")
+        return
+    
     for fac_id in faculty_lecture_final_map:
         for slot,batch in faculty_lecture_final_map[fac_id]:
             course_id = db.execute("SELECT course_id FROM offers WHERE user_id=:id AND batch=:batch",{"id":fac_id,"batch":batch}).fetchone()
@@ -558,3 +626,4 @@ def gen():
             print(course_id,day,day_slot,fac_id,slot)
             db.execute("INSERT INTO timetable (user_id,course_id,batch,day,day_slot,slot) VALUES (:user_id,:course_id,:batch,:day,:day_slot,:slot)",{"user_id":fac_id,"course_id":course_id,"batch":batch,"day":day,"day_slot":day_slot,"slot":slot})
     db.commit()            
+
