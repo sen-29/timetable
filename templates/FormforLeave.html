@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block main %}
+<div class="formforleave" style="background-color: #ffffff; margin-top: 10px; margin-left: 200px; margin-right: 200px; padding: 30px; border-radius: 25px; box-shadow: 8px 8px 5px #000000;">
 <form class="form-horizontal" action="{{ url_for('requests') }}" method="post">
     {% with messages = get_flashed_messages() %}
 	  {% if messages %}
@@ -16,9 +17,9 @@
 	  {% endif %}
 	{% endwith %}
     <div class="form-group"> <!--leave type  -->
-        <label for="leavetype" class="control-label col-sm-2">Select Leave Type</label>
-        <div class="col-sm-10">
-            <select class="form-control" id="type" name="type">
+        <label for="leavetype" class="control-label col-sm-3">Select Leave Type</label>
+        <div class="col-sm-1">
+            <select class="form-control" id="type" style="width: 390px;" name="type">
                 <option value="Early going">Early going</option>
                 <option value="Coming late">Coming late</option>
                 <option value="Leave">Leave</option>
@@ -26,22 +27,23 @@
         </div>  
     </div>
     <div class="form-group"> <!-- Birth Date-->
-        <label for="leavedate" class="control-label col-sm-2">Leave Date</label>
-        <div class="col-sm-10">
-            <input type="date" class="form-control" id="leavedate" name="leavedate">
+        <label for="leavedate" class="control-label col-sm-3">Leave Date</label>
+        <div class="col-sm-1">
+            <input type="date" class="form-control" id="leavedate" style="width: 390px;" name="leavedate">
         </div>  
     </div>
     <div class="form-group"> <!-- Reason -->
-        <label for="reason" class="control-label col-sm-2">Reason</label>
-        <div class="col-sm-10">
-            <textarea class="form-control" id="reason" name="reason"></textarea>
+        <label for="reason" class="control-label col-sm-3">Reason</label>
+        <div class="col-sm-1">
+            <textarea class="form-control" id="reason" style="width: 390px;" name="reason"></textarea>
         </div>  
     </div>
 
     <div class="form-group"> <!-- Submit Button -->
-        <div class="col-sm-10 col-sm-offset-2">                     
-            <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="col-sm-1 col-sm-offset-8">                     
+            <button type="submit" class="btn btn-primary" style="width: 100px;">Submit</button>
         </div>
     </div> 
 </form>  
+</div>
 {% endblock %}

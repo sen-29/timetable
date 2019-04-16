@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block main %}
+<div class="generate" style="background-color: #ffffff; margin-top: 10px; margin-left: 200px; margin-right: 200px; padding: 30px; border-radius: 25px; box-shadow: 8px 8px 5px #000000;">
 <form class="form-horizontal" action="{{ url_for('generate') }}" method="post">
     {% if get_flashed_messages() %}
         <div class="alert alert-danger alert-dismissible fade in" style="width: auto; display: inline-block;">
@@ -13,10 +14,11 @@
     {% endif %}
     {% if generate %}
     <div class="form-group"> <!-- Submit Button -->
-        <div class="col-sm-10 col-sm-offset-2">                     
-            <button type="submit" class="btn btn-primary">Generate</button>
+        <div class="col-sm-1 col-sm-offset-4">                     
+            <button type="submit" class="btn btn-primary">Generate Time-table</button>
         </div>
     </div> 
     {% endif %}
 </form>
+</div>
 {% endblock %}

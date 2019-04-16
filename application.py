@@ -27,8 +27,8 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-#engine = create_engine("postgres:///tat")
-engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
+engine = create_engine("postgres:///tat")
+#engine = create_engine("postgres://qqiqlhzydfpsxs:26c1fca3380b9d7b46fd0925b1b1e58fc995d6cccd1f926e9c9c83eda30b5c13@ec2-75-101-131-79.compute-1.amazonaws.com:5432/d1ak4rtao1o18l")
 db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
@@ -64,7 +64,7 @@ def login():
                     return render_template("login.html")
                     
         else:
-            message = Markup("User with this mobile no. doesn't exist")
+            message = Markup("<strong>User with this mobile no. doesn't exist</strong>")
             flash(message)
             return render_template("login.html")
 
@@ -85,6 +85,9 @@ def logout():
 @app.route("/generate" , methods=["GET","POST"])
 @login_required
 def generate():
+    x = admin_permission()
+    if x is not 1:
+        return x
     g = 1
     if request.method == "POST":
         db.execute("DELETE FROM timetable")
@@ -98,6 +101,9 @@ def generate():
 @app.route("/add_faculty" , methods=["GET","POST"])
 @login_required
 def add_faculty():
+    x = admin_permission()
+    if x is not 1:
+        return x
     if request.method == "POST":
         name = request.form.get("name")
         email = request.form.get("email")
@@ -130,6 +136,9 @@ def add_faculty():
 @app.route("/remove_faculty" , methods=["GET","POST"])
 @login_required
 def remove_faculty():
+    x = admin_permission()
+    if x is not 1:
+        return x
     rows = db.execute("SELECT * FROM users WHERE isadmin = 0").fetchall()
     if request.method == "POST":
         id = int(request.form.get("id"))
@@ -153,12 +162,18 @@ def remove_faculty():
 @app.route("/list_faculty")
 @login_required
 def list_faculty():
+    x = admin_permission()
+    if x is not 1:
+        return x
     rows = db.execute("SELECT * FROM users WHERE isadmin = 0").fetchall()
     return render_template("ListFaculty.html",isadmin=check_admin(),rows=rows)
 
 @app.route("/add_courses" , methods=["GET","POST"])
 @login_required
 def add_courses():
+    x = admin_permission()
+    if x is not 1:
+        return x
     if request.method == "POST":
         name = request.form.get("name")
         courseid = request.form.get("courseid")
@@ -185,6 +200,9 @@ def add_courses():
 @app.route("/remove_courses", methods=["GET","POST"])
 @login_required
 def remove_courses():
+    x = admin_permission()
+    if x is not 1:
+        return x
     rows = db.execute("SELECT * FROM courses").fetchall()
     if request.method == "POST":
         id = request.form.get("id")
@@ -209,12 +227,18 @@ def remove_courses():
 @app.route("/list_courses")
 @login_required
 def list_courses():
+    x = admin_permission()
+    if x is not 1:
+        return x
     rows = db.execute("SELECT * FROM courses").fetchall()
     return render_template("ListCourse.html",isadmin=check_admin(),rows=rows)
 
 @app.route("/add_offer", methods=["GET","POST"])
 @login_required
 def add_offer():
+    x = admin_permission()
+    if x is not 1:
+        return x
     courses = db.execute("SELECT * FROM courses").fetchall()
     profs = db.execute("SELECT * FROM users WHERE isadmin = 0").fetchall()
     if request.method == "POST":
@@ -239,6 +263,9 @@ def add_offer():
 @app.route("/remove_offer", methods=["GET","POST"])
 @login_required
 def remove_offer():
+    x = admin_permission()
+    if x is not 1:
+        return x
     rows = db.execute("SELECT * FROM offers").fetchall()
     if request.method == "POST":
         id = request.form.get("course_id")
@@ -262,12 +289,18 @@ def remove_offer():
 @app.route("/list_offer")
 @login_required
 def list_offer():
+    x = admin_permission()
+    if x is not 1:
+        return x
     rows = db.execute("SELECT name,course_id,batch FROM offers JOIN users ON offers.user_id = users.id ORDER BY batch").fetchall()
     return render_template("ListOffer.html",isadmin=check_admin(),rows=rows)
 
 @app.route("/add_slot", methods=["GET","POST"])
 @login_required
 def add_slot():
+    x = admin_permission()
+    if x is not 1:
+        return x
     rows = db.execute("SELECT * FROM offers WHERE batch = 3 OR batch = 4").fetchall()
     if request.method == "POST":
         id = request.form.get("course_id")
@@ -290,6 +323,9 @@ def add_slot():
 @app.route("/remove_slot", methods=["GET","POST"])
 @login_required
 def remove_slot():
+    x = admin_permission()
+    if x is not 1:
+        return x
     rows = db.execute("SELECT * FROM slots").fetchall()
     if request.method == "POST":
         id = request.form.get("course_id")
@@ -312,12 +348,18 @@ def remove_slot():
 @app.route("/list_slot")
 @login_required
 def list_slot():
+    x = admin_permission()
+    if x is not 1:
+        return x
     rows = db.execute("SELECT * FROM slots ORDER BY slot").fetchall()
     return render_template("ListSlot.html",isadmin=check_admin(),rows=rows)
 
 @app.route("/list_req")
 @login_required
 def list_req():
+    x = admin_permission()
+    if x is not 1:
+        return x
     cur_date = datetime.now()
     rows = db.execute("SELECT * FROM requests JOIN users ON users.id=requests.user_id AND leave_date > :cur_date ORDER BY leave_date",{"cur_date":cur_date}).fetchall()
     return render_template("Listreq.html",isadmin=check_admin(),rows=rows)
@@ -336,6 +378,9 @@ def view():
 @app.route("/preference", methods=["GET","POST"])
 @login_required
 def preference():
+    x = faculty_premission()
+    if x is not 1:
+        return x
     id = session["user_id"]
     if request.method == "POST":
         preferences = request.form.getlist("preference")
@@ -376,6 +421,9 @@ def change_password():
 @app.route("/requests", methods=["GET","POST"])
 @login_required
 def requests():
+    x = faculty_premission()
+    if x is not 1:
+        return x
     if request.method == "POST":
         id = session["user_id"]
         type_req = request.form.get("type")
@@ -396,7 +444,25 @@ def check_admin():
     x = db.execute("SELECT isadmin from users WHERE id = :id",{'id':session["user_id"]}).fetchone()
     if len(x) == 0:
         session.clear()
-        message = Markup("Something goes wrong login again")
+        message = Markup("<strong>Something goes wrong login again!!</strong>")
         flash(message)
         return render_template("login.html")
     return x[0]
+
+def admin_permission():
+    if check_admin() == 0:
+        message = Markup("<strong>You don't have premission to access this page</strong>")
+        flash(message)
+        id = session["user_id"]
+        row = db.execute("SELECT * FROM users WHERE id=:id",{"id":id}).fetchone()
+        return render_template("index.html",isadmin=check_admin(),row=row)
+    return 1
+
+def faculty_premission():
+    if check_admin() == 1:
+        id = session["user_id"]
+        row = db.execute("SELECT * FROM users WHERE id=:id",{"id":id}).fetchone()
+        message = Markup("<strong>You don't have premission to access this page</strong>")
+        flash(message)
+        return render_template("index.html",isadmin=check_admin(),row=row)
+    return 1

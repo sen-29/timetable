@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block main %}
+<div class="addoffer" style="background-color: #ffffff; margin-top: 10px; margin-left: 200px; margin-right: 200px; padding: 30px; border-radius: 25px; box-shadow: 8px 8px 5px #000000;">
 <form class="form-horizontal" action="{{ url_for('add_offer') }}" method="post">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -16,9 +17,9 @@
         {% endif %}
       {% endwith %}
     <div class="form-group"> <!--prof list  -->
-        <label for="proflist" class="control-label col-sm-2">Select Professor</label>
-        <div class="col-sm-10">
-            <select class="form-control" id="proflist" name="prof" required>
+        <label for="proflist" class="control-label col-sm-3">Select Professor</label>
+        <div class="col-sm-1">
+            <select class="form-control" id="proflist" name="prof" style="width: 390px;" required>
                 {% for prof in profs %}
                 <option value="{{ prof.id }}" >{{ prof.name }}</option>
                 {% endfor %}
@@ -27,9 +28,9 @@
     </div>
 
     <div class="form-group"> <!--course list -->
-        <label for="slotlist" class="control-label col-sm-2">Select Course</label>
-        <div class="col-sm-10">
-            <select class="form-control" id="course_id" name="course_id" required>
+        <label for="slotlist" class="control-label col-sm-3">Select Course</label>
+        <div class="col-sm-1">
+            <select class="form-control" id="course_id" name="course_id" style="width: 390px;" required>
                 {% for course in courses %}
                 <option value="{{ course.id }}" >{{ course.id }}</option>
                 {% endfor %}
@@ -37,8 +38,8 @@
         </div>  
     </div>
     <div class="form-group"> <!-- Frequency Field -->
-        <label class="control-label col-sm-2">Btech(Year)</label>
-        <div class="col-sm-10">
+        <label class="control-label col-sm-3">Btech(Year)</label>
+        <div class="col-sm-1">
                 <div class="radio">
                         <label class="radio">
                             <input name="year" type="radio" value="1" checked/>
@@ -67,9 +68,10 @@
     </div>
 
     <div class="form-group"> <!-- Submit Button -->
-        <div class="col-sm-10 col-sm-offset-2">                     
-            <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="col-sm-1 col-sm-offset-8">                     
+            <button type="submit" class="btn btn-primary" style="width: 100px;">Add</button>
         </div>
     </div> 
 </form>
+</div>
 {% endblock %}

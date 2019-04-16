@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block main %}
+<div class="addcourse" style="background-color: #ffffff; margin-top: 10px; margin-left: 200px; margin-right: 200px; padding: 30px; border-radius: 25px; box-shadow: 8px 8px 5px #000000;">
 <form class="form-horizontal"  action="{{ url_for('add_courses') }}" method="post">
     {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -16,21 +17,21 @@
     {% endif %}
   {% endwith %}
     <div class="form-group"> <!-- Full Name -->
-        <label for="course_id" class="control-label col-sm-2">Course ID</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="course_id" name="courseid" placeholder="Enter Course Id" required/>
+        <label for="course_id" class="control-label col-sm-3">Course ID</label>
+        <div class="col-sm-1">
+            <input type="text" class="form-control" id="course_id" name="courseid" style="width: 390px; background: transparent;  border: none;border-bottom: 1px solid #000000; outline: none; box-shadow:none;" placeholder="Enter Course Id" required/>
         </div>  
     </div>
 
     <div class="form-group"> <!-- Full Name -->
-        <label for="course_name" class="control-label col-sm-2">Course Name</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="course_name" name="name" placeholder="Enter Course Name" required/>
+        <label for="course_name" class="control-label col-sm-3">Course Name</label>
+        <div class="col-sm-1">
+            <input type="text" class="form-control" id="course_name" name="name"  style="width: 390px; background: transparent;  border: none;border-bottom: 1px solid #000000; outline: none; box-shadow:none;" placeholder="Enter Course Name" required/>
         </div>  
     </div>
     <div class="form-group"> <!-- Frequency Field -->
-        <label class="control-label col-sm-2">Lecture(Per Week)</label>
-        <div class="col-sm-10">
+        <label class="control-label col-sm-3">Lecture(Per Week)</label>
+        <div class="col-sm-1">
                 <div class="radio">
                         <label class="radio">
                             <input name="lecture" type="radio" value="0" checked/>
@@ -59,21 +60,21 @@
     </div>
     
     <div class="form-group"> <!-- Frequency Field -->
-        <label class="control-label col-sm-2">Lab Hours</label>
-        <div class="col-sm-10">
-                <div class="radio">
+        <label class="control-label col-sm-3">Lab Hours</label>
+        <div class="col-sm-3" >
+                <div class="radio" style="text-align: left;">
                         <label class="radio">
                             <input name="lab" type="radio" value="0" checked/>
                             No lab
                         </label>
                     </div>
-            <div class="radio">
-                <label class="radio">
+            <div class="radio" style="text-align: left;">
+                <label class="radio" >
                     <input name="lab" type="radio" value="2"/>
                     Two Hour
                 </label>
             </div>
-            <div class="radio">
+            <div class="radio" style="text-align: left;">
                 <label class="radio">
                     <input name="lab" type="radio" value="3"/>
                     Three Hour
@@ -83,8 +84,8 @@
     </div>
     
     <div class="form-group"> <!-- Frequency Field -->
-        <label class="control-label col-sm-2">Tutorials</label>
-        <div class="col-sm-10">
+        <label class="control-label col-sm-3">Tutorials</label>
+        <div class="col-sm-1">
             <div class="radio">
                 <label class="radio">
                     <input name="tutorial" type="radio" value="1"/>
@@ -101,9 +102,10 @@
     </div>
      
     <div class="form-group"> <!-- Submit Button -->
-        <div class="col-sm-10 col-sm-offset-2">                     
-            <button type="submit" class="btn btn-primary">Add</button>
+        <div class="col-sm-1 col-sm-offset-8">                     
+            <button type="submit" class="btn btn-primary" style="width: 100px;">Add</button>
         </div>
     </div> 
-</form>       
+</form>
+</div>       
 {% endblock %}

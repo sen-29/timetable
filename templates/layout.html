@@ -19,11 +19,11 @@
 
     </head>
 
-    <body>
+    <body style="background-color: #ffffff;">
 
-        <div class="container">
+        <div class="container1" >
 
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-default" style="background-color: #ffffff; margin-top: -5px; margin-left: -99px; margin-right: -99px;">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar" data-toggle="collapse" type="button">
@@ -32,7 +32,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="{{ url_for('index') }}"><span class="blue"> Teacher </span><span class="red"> Automatic </span><span class="yellow"> Timetable</span></a>
+                        <a class="navbar-brand" href="{{ url_for('index') }}"><span style="font-size: 15px" class="glyphicon glyphicon-education"></span><span class="blue"> Teachers </span><span class="red"> Automatic </span><span class="yellow"> Timetable</span></a>
                     </div>
                     <div class="collapse navbar-collapse" id="navbar">
                         {% if session.user_id %}
