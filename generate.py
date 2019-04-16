@@ -86,10 +86,11 @@ class Time_table:
                             if preference in self.blocked_slot:
                                 continue
                             binary = 0
-                            for slot,batch in faculty_lecture_final_map[name]:
-                                if slot==preference:
-                                    binary = 1
-                                    break
+                            if name in faculty_lecture_final_map:
+                                for slot,batch in faculty_lecture_final_map[name]:
+                                    if slot==preference:
+                                        binary = 1
+                                        break
                             for k in range(1,6):
                                 temp_preference = (day-1)*5 + k
                                 if temp_preference in self.blocked_slot and temp_preference in self.final_time_table:
@@ -696,10 +697,11 @@ class Time_table2:
                             if preference in self.blocked_slot:
                                 continue
                             binary = 0
-                            for slot,batch in faculty_lecture_final_map[name]:
-                                if slot==preference:
-                                    binary = 1
-                                    break
+                            if name in faculty_lecture_final_map:
+                                for slot,batch in faculty_lecture_final_map[name]:
+                                    if slot==preference:
+                                        binary = 1
+                                        break
                             for k in range(1,6):
                                 temp_preference = (day-1)*5 + k
                                 if temp_preference in self.blocked_slot and temp_preference in self.final_time_table:
@@ -1227,7 +1229,7 @@ def btech4():
     #print(unsuccessful)
     return unsuccessful
     
-def gen2():
+def gen2(timer):
     unsuccessfu = 0
     faculty_lecture_final_map.clear()
     #print(unsuccessfu)
@@ -1242,10 +1244,11 @@ def gen2():
 
     if unsuccessfu >= 1:
         print()
-        gen()
-        return
+        timer+=1
+        x = gen(timer)
+        return x
 
-def gen():
+def gen(timer):
     unsuccessfu = 0
     faculty_lecture_final_map.clear()
     days = ["monday","tuesday","wednesday","thursday","friday"]
@@ -1258,11 +1261,16 @@ def gen():
     #print(unsuccessfu)
     unsuccessfu += btech4()
     #print(unsuccessfu)
+    
+    if timer > 20:
+        return -1
+    
     if unsuccessfu >= 1:
         print()
-        gen2()
-        return
-    
+        timer+=1
+        x = gen2(timer)
+        return x
+
     for fac_id in faculty_lecture_final_map:
         for slot,batch in faculty_lecture_final_map[fac_id]:
             course_id = db.execute("SELECT course_id FROM offers WHERE user_id=:id AND batch=:batch",{"id":fac_id,"batch":batch}).fetchone()
@@ -1272,3 +1280,5 @@ def gen():
             #print(fac_id,slot,batch)
             db.execute("INSERT INTO timetable (user_id,course_id,batch,day,day_slot,slot) VALUES (:user_id,:course_id,:batch,:day,:day_slot,:slot)",{"user_id":fac_id,"course_id":course_id,"batch":batch,"day":day,"day_slot":day_slot,"slot":slot})
     db.commit()
+
+    return 1

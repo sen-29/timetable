@@ -93,7 +93,13 @@ def generate():
         db.execute("DELETE FROM timetable")
         db.commit()
         g = 0
-        gen()
+        success = gen(0)
+        if success == -1:
+            message = Markup('<strong>Something goes wrong try again</strong>')
+            flash(message)
+            return render_template("generate.html",isadmin=check_admin(),generate=g)
+        message = Markup('<strong>Timetable Successfully generated</strong>')
+        flash(message)
         return render_template("generate.html",isadmin=check_admin(),generate=g)
     else:
         return render_template("generate.html",isadmin=check_admin(),generate=g)

@@ -5,5 +5,5 @@ create table timetable(
 	day varchar(10),
 	day_slot integer,
 	slot integer,
-	primary key(user_id,course_id,slot)
+	primary key(user_id,slot)
 );

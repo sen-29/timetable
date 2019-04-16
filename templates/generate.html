@@ -6,12 +6,17 @@
 {% block main %}
 <div class="generate" style="background-color: #ffffff; margin-top: 10px; margin-left: 200px; margin-right: 200px; padding: 30px; border-radius: 25px; box-shadow: 8px 8px 5px #000000;">
 <form class="form-horizontal" action="{{ url_for('generate') }}" method="post">
-    {% if get_flashed_messages() %}
-        <div class="alert alert-danger alert-dismissible fade in" style="width: auto; display: inline-block;">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-               Invalid <strong> Username or Password </strong> 
-        </div>
-    {% endif %}
+    {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible fade in" style="width: auto; display: inline-block;">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {{message}}
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+            
     {% if generate %}
     <div class="form-group"> <!-- Submit Button -->
         <div class="col-sm-1 col-sm-offset-4">                     
