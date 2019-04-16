@@ -121,6 +121,10 @@ def add_faculty():
             message = Markup('<strong>Please Enter Right Year</strong>')
             flash(message)
             return render_template("AddFaculty.html",isadmin=check_admin())
+        if len(mobile) != 10:
+            message = Markup('<strong>Please Enter Mobile Number</strong>')
+            flash(message)
+            return render_template("AddFaculty.html",isadmin=check_admin())
         password = date 
         row = db.execute("SELECT * from users WHERE mobile = :mobile",{'mobile':mobile}).fetchall()
         x = len(row)
@@ -187,6 +191,10 @@ def add_courses():
         lab = float(request.form.get("lab"))
         tut = int(request.form.get("tutorial"))
         credit = lecture + tut + (lab / 2)
+        if len(courseid) != 5:
+            message = Markup('<strong>Please Enter Right Course Id</strong>')
+            flash(message)
+            return render_template("AddCourse.html",isadmin=check_admin())
         row = db.execute("SELECT * from courses WHERE id = :id",{'id':courseid}).fetchall()
         x = len(row)
         if x == 0:
