@@ -111,6 +111,7 @@ def add_faculty():
     if x is not 1:
         return x
     if request.method == "POST":
+        num = [0,1,2,3,4,5,6,7,8,9]
         name = request.form.get("name")
         email = request.form.get("email")
         mobile = request.form.get("mobile")
@@ -121,10 +122,11 @@ def add_faculty():
             message = Markup('<strong>Please Enter Right Year</strong>')
             flash(message)
             return render_template("AddFaculty.html",isadmin=check_admin())
-        if len(mobile) != 10:
+        if len(mobile) != 10 or mobile.isdigit() == False:
             message = Markup('<strong>Please Enter Mobile Number</strong>')
             flash(message)
             return render_template("AddFaculty.html",isadmin=check_admin())
+        
         password = date 
         row = db.execute("SELECT * from users WHERE mobile = :mobile",{'mobile':mobile}).fetchall()
         x = len(row)
@@ -159,7 +161,7 @@ def remove_faculty():
             db.execute("DELETE FROM users WHERE id = :id and isadmin = 0",{"id":id})
             db.commit()
             rows = db.execute("SELECT * FROM users WHERE isadmin = 0").fetchall()
-            message = Markup(name + '<strong> Succefully Deleted</strong>')
+            message = Markup(name + '<strong> Successfully Deleted</strong>')
             flash(message)
             return render_template("RemoveFaculty.html",isadmin=check_admin(),rows=rows)
         else:
@@ -227,7 +229,7 @@ def remove_courses():
             db.execute("DELETE FROM courses WHERE id = :id",{"id":id})
             db.commit()
             rows = db.execute("SELECT * FROM courses").fetchall()
-            message = Markup(name + '<strong> Succefully Deleted</strong>')
+            message = Markup(name + '<strong> Successfully Deleted</strong>')
             flash(message)
             return render_template("RemoveCourse.html",isadmin=check_admin(),rows=rows)
         else:
@@ -447,7 +449,7 @@ def requests():
         if(current_date < date):
             db.execute("INSERT INTO requests (user_id,leave_type,reason,leave_date) VALUES (:id,:type_req,:reason,:date)",{"id":id,"type_req":type_req,"reason":reason,"date":date})
             db.commit()
-            message = Markup("<strong> Your Request Succefully sended </strong>")
+            message = Markup("<strong> Your Request Successfully sended </strong>")
             flash(message)
         else:
             message = Markup("<strong> Please Enter Right Date </strong>")
